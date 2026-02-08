@@ -1,0 +1,81 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Compound Concepts Are Compositionally Derived}
+
+Our four experiments converge on a consistent picture: compound nouns in \gpttwo are not stored as unique directions in the residual stream.
+Instead, the model uses two complementary mechanisms.
+First, \emph{next-token prediction boosting}: the representation of $\wone$ (``washing'') causes the model to assign high probability to $\wtwo$ (``machine'') as the next token.
+Second, \emph{contextual modulation}: the hidden state at the $\wtwo$ position is a linear combination of constituent representations ($\Rsq = 0.937$) with a small unique component (${\sim}6\%$) that carries compound-specific information.
+
+This finding is consistent with \citet{aljaafari2024interpreting}, who found no single layer integrating tokens into unified semantic representations, and with \citet{dankers2022can}, who observed a bias toward compositional processing in transformers.
+However, our quantitative decomposition goes further: we show that the compositional component accounts for the vast majority (94\%) of the representation, with the unique component being small but detectable.
+
+\subsection{The Role of Compositionality}
+
+The correlation between linguistic compositionality and $\Rsq$ (Spearman $\rho = 0.669$, $p = 0.006$) reveals that the model allocates more unique representational capacity to semantically opaque compounds.
+``Hot dog'' ($\Rsq = 0.888$, compositionality = 1) has the most unique content of any tested compound, while ``steel bridge'' ($\Rsq = 0.965$, compositionality = 5) is almost entirely derived from its parts.
+This suggests that the model learns to devote additional capacity---the ${\sim}11\%$ unique component for ``hot dog'' versus ${\sim}4\%$ for ``steel bridge''---to encoding the non-compositional semantics that cannot be derived from the meanings of ``hot'' and ``dog'' separately.
+
+An intriguing exception is ``guinea pig'' (compositionality = 2), which despite being semantically opaque has the highest next-token boost ratio ($7{,}233\times$).
+This dissociation between semantic compositionality and statistical predictability confirms that the model's next-token boosting mechanism relies on co-occurrence statistics rather than semantic understanding.
+
+\subsection{No Token Erasure: A Model-Scale Effect?}
+
+Our finding of perfect token identity recovery at every layer in \gpttwo contradicts \citet{feucht2024token}, who observed strong erasure in \llamatwo.
+Several explanations are possible.
+First, model scale: \gpttwo has 124M parameters versus 7B for Llama-2, and smaller models may lack the capacity to develop implicit vocabulary representations.
+Second, entity type: \citet{feucht2024token} studied named entities (``Space Needle''), which may be processed differently from common compound nouns (``washing machine'').
+Third, architecture differences between GPT-2 and Llama-2 (rotary position embeddings, different normalization) could affect how multi-token information is propagated.
+Resolving this requires testing compound nouns specifically in larger models.
+
+\subsection{The U-Shaped $\Rsq$ Pattern}
+
+The dip in $\Rsq$ at layers 4--5 (${\sim}0.800$) followed by recovery at layer 11 ($0.937$) suggests a two-phase processing pipeline.
+In early-to-mid layers, the model performs compound-specific transformations that move the representation away from a simple constituent combination---potentially encoding semantic relationships or pragmatic associations.
+In later layers, the representation is restructured toward a form optimized for next-token prediction, which apparently resembles the compositional combination more closely.
+This is consistent with \citet{geva2022transformer}'s finding that FFN layers build predictions by promoting concepts in vocabulary space: the final layers may ``undo'' some of the compound-specific processing to produce a representation that correctly predicts the next token.
+
+\subsection{Implications}
+
+\para{For mechanistic interpretability.}
+Compound concepts challenge the ``one concept = one direction'' view.
+If ``washing machine'' does not have its own direction, SAE features for compounds will likely be unreliable---consistent with the feature absorption problem~\citep{chanin2024absorption}.
+Interpretability methods should account for the fact that multi-token concept representations are distributed across constituent directions plus contextual modulation.
+
+\para{For concept editing.}
+Editing ``washing machine'' by modifying a single direction would likely fail.
+Instead, one would need to modify the contextual relationship between ``washing'' and ``machine'' representations, which involves attention patterns and FFN transformations distributed across the network.
+This has practical implications for knowledge editing and model debiasing approaches that assume concepts have localized linear representations.
+
+\para{For the linear representation hypothesis.}
+The hypothesis holds approximately for compounds: compound representations are linear combinations of constituent representations.
+However, the ${\sim}6\%$ unique component and the U-shaped layer evolution suggest that the full picture involves nonlinear dynamics in intermediate layers.
+The linear representation hypothesis, as tested by \citet{park2024linear}, should be extended to explicitly consider multi-token concepts.
+
+\subsection{Limitations}
+
+\para{Model scale.}
+\gpttwo is small by modern standards.
+Larger models may develop more holistic compound representations, particularly given the token erasure findings in \llamatwo~\citep{feucht2024token}.
+Our validation on \gptmed shows similar patterns, but testing on 7B+ models is needed.
+
+\para{Limited context diversity.}
+We use 8 sentence templates per compound.
+Natural corpus contexts from large-scale text (\eg The Pile) would better capture the range of compound usage and reduce template bias.
+
+\para{English only.}
+All compounds are English.
+Languages with productive compounding (\eg German, where novel compounds are formed freely) may reveal different patterns.
+
+\para{Linear probing.}
+Linear probes may miss nonlinear compound representations.
+MLP probes or representation similarity analysis could capture additional structure.
+
+\para{Control phrase selection.}
+The specific choice of control words (\eg ``red'' for ``washing machine'') affects boost ratios.
+A larger set of control words would provide more robust estimates.
+
+\para{Small dataset.}
+With 19 compounds, our statistical power is limited.
+The correlation between compositionality and $\Rsq$ ($p = 0.006$) is significant, but a larger dataset (100+ compounds with validated compositionality ratings) would strengthen this finding.

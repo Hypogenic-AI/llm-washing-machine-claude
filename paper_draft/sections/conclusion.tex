@@ -1,0 +1,11 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We investigated how compound nouns are represented in the residual stream of autoregressive language models.
+Through four experiments on \gpttwo (validated on \gptmed), we find that compound concepts like ``washing machine'' are not stored as unique directions.
+Instead, the model uses compositional mechanisms: the compound direction is 93.7\% reconstructable from constituent word directions, and the dominant processing mechanism is next-token prediction boosting (median $20\times$ boost).
+We observe no token erasure in \gpttwo---constituent identity is perfectly recoverable at every layer---and the small unique component (${\sim}6\%$) of compound representations, while sufficient to distinguish compound from non-compound contexts (92.2\% probe accuracy), does not constitute a dedicated compound direction.
+
+These findings have direct implications for mechanistic interpretability, concept editing, and the linear representation hypothesis.
+Multi-token compound concepts are best understood not as points in activation space but as contextual modulations of constituent representations.
+Future work should extend this analysis to larger models where token erasure has been observed, use natural corpus contexts, and test whether the compositional storage pattern holds across languages and for longer multi-word expressions.

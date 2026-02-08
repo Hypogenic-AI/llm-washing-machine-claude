@@ -1,0 +1,8 @@
+Large language models must represent millions of compound concepts---``washing machine,'' ``hot dog,'' ``coffee table''---yet their residual streams have limited dimensionality.
+How do these multi-token concepts fit?
+We investigate whether compound nouns are stored as unique directions in the residual stream or are compositionally derived from their constituent words.
+Through four complementary experiments on \gpttwo (124M parameters), we find that compounds are primarily represented through composition: a linear combination of constituent word directions explains 93.7\% of the variance in compound representations ($\Rsq = 0.937$), and the dominant mechanism is next-token prediction boosting---seeing ``washing'' raises $P(\text{``machine''})$ by a median factor of $20\times$ compared to control contexts.
+A linear probe achieves 92.2\% accuracy at distinguishing compound from non-compound contexts, confirming that compounds carry contextual information beyond their parts, but this signal accounts for only ${\sim}6\%$ of the total representation.
+We find no evidence of token erasure in \gpttwo: constituent word identity is perfectly recoverable from the compound position at every layer.
+More idiomatic compounds (\eg ``hot dog,'' $\Rsq = 0.888$) require more unique representational capacity than transparent ones (\eg ``steel bridge,'' $\Rsq = 0.965$).
+Our findings challenge the assumption that multi-token concepts have dedicated directions and have direct implications for concept editing, representation steering, and sparse autoencoder-based interpretability.

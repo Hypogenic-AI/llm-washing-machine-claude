@@ -1,0 +1,142 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Next-Token Prediction Boosting}
+\label{sec:results_exp1}
+
+The primary mechanism for compound processing is next-token prediction boosting.
+\tabref{tab:next_token} shows that for strongly associated compounds, $\wtwo$ is the top prediction after $\wone$: ``washing'' yields $P(\text{``machine''}) = 0.827$ (rank 1), ``guinea'' yields $P(\text{``pig''}) = 0.833$ (rank 1), and ``swimming'' yields $P(\text{``pool''}) = 0.626$ (rank 1).
+The median boost ratio across all compounds is $20.2\times$ (95\% CI: $[4.7, 180.2]$), which is statistically significant (Wilcoxon signed-rank $W = 160$, $p = 2.1 \times 10^{-4}$, Cohen's $d = 0.63$).
+
+\begin{table}[t]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{}lccccr@{}}
+        \toprule
+        \textbf{Compound} & $P(\wtwo \mid \wone)$ & \textbf{Rank} & $P(\wtwo \mid \wone^{\text{ctrl}})$ & \textbf{Ctrl Rank} & \textbf{Boost} \\
+        \midrule
+        guinea pig & 0.833 & {\bf 1} & 0.0001 & 1755 & $7{,}233\times$ \\
+        washing machine & 0.827 & {\bf 1} & 0.0002 & 924 & $4{,}963\times$ \\
+        swimming pool & 0.626 & {\bf 1} & 0.0011 & 125 & $549\times$ \\
+        parking lot & 0.322 & {\bf 1} & 0.0116 & 14 & $28\times$ \\
+        living room & 0.261 & 2 & 0.0016 & 98 & $160\times$ \\
+        driving license & 0.036 & 118 & 0.0002 & 1325 & $221\times$ \\
+        hot dog & 0.097 & 4 & 0.0022 & 142 & $45\times$ \\
+        coffee table & 0.063 & 4 & 0.0091 & 14 & $7\times$ \\
+        chocolate cake & 0.036 & 5 & 0.0003 & 978 & $140\times$ \\
+        \midrule
+        snowman & 0.004 & 63 & 0.043 & 7 & $0.1\times$ \\
+        sunflower & 0.0001 & 1673 & 0.0004 & 706 & $0.3\times$ \\
+        \bottomrule
+    \end{tabular}
+    }
+    \caption{Next-token prediction results for selected compounds. The boost ratio (\eqref{eq:boost}) measures how much more likely $\wtwo$ is after $\wone$ compared to a control word. Strong compounds show boost ratios of $28$--$7{,}233\times$, while single-token compounds (snowman, sunflower) show ratios below 1.}
+    \label{tab:next_token}
+\end{table}
+
+Two compounds---snowman and sunflower---show boost ratios below 1, meaning the control word actually predicts $\wtwo$ better.
+This is expected: these compounds are written as single words in standard English (``snowman,'' ``sunflower''), so the model's training data does not contain ``snow'' and ``man'' as adjacent tokens in compound contexts.
+
+\subsection{Compound Directions Are 93.7\% Reconstructable}
+\label{sec:results_exp2}
+
+\tabref{tab:reconstruction} presents the linear reconstruction results at the final layer.
+The mean $\Rsq$ across all 15 tested compounds is $0.937 \pm 0.020$ ($t = 176.3$, $p = 7.9 \times 10^{-25}$ vs.\ the null of $\Rsq = 0$).
+The mean cosine similarity between compound and $\wtwo$ directions is 0.959, and between compound and $\wone$ directions is 0.926.
+The mean residual norm ratio is 0.253, indicating that only ${\sim}25\%$ of the compound representation's norm is not explained by constituents.
+
+\begin{table}[t]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{}lccccl@{}}
+        \toprule
+        \textbf{Compound} & $\Rsq$ & $\cos(\compound, \wone)$ & $\cos(\compound, \wtwo)$ & \textbf{Residual} & \textbf{Comp.} \\
+        \midrule
+        steel bridge & {\bf 0.965} & 0.924 & 0.982 & 0.188 & 5 \\
+        garden hose & 0.962 & 0.933 & 0.979 & 0.196 & 5 \\
+        door handle & 0.958 & 0.949 & 0.976 & 0.206 & 5 \\
+        mountain cabin & 0.956 & 0.937 & 0.975 & 0.209 & 5 \\
+        chocolate cake & 0.953 & 0.944 & 0.975 & 0.216 & 5 \\
+        coffee table & 0.938 & 0.934 & 0.962 & 0.249 & 5 \\
+        swimming pool & 0.924 & 0.932 & 0.957 & 0.276 & 4 \\
+        washing machine & 0.917 & 0.907 & 0.951 & 0.288 & 4 \\
+        hot dog & 0.888 & 0.897 & 0.934 & 0.335 & 1 \\
+        \midrule
+        \textbf{Mean} & $0.937$ & $0.926$ & $0.959$ & $0.253$ & --- \\
+        \bottomrule
+    \end{tabular}
+    }
+    \caption{Linear reconstruction of compound directions from constituent directions at the final layer.
+    $\Rsq$ measures the fraction of variance explained by the linear model in \eqref{eq:reconstruction}.
+    Residual is the normalized reconstruction error.
+    Comp.\ is the compositionality rating (1=idiomatic, 5=transparent).
+    More compositional compounds have higher $\Rsq$.
+    }
+    \label{tab:reconstruction}
+\end{table}
+
+{\bf Compositionality predicts reconstruction quality.}
+There is a significant positive correlation between compositionality rating and $\Rsq$ (Spearman $\rho = 0.669$, $p = 0.006$): transparent compounds like ``steel bridge'' ($\Rsq = 0.965$) are better reconstructed than idiomatic ones like ``hot dog'' ($\Rsq = 0.888$).
+This is exactly what the compositional hypothesis predicts---idiomatic compounds require more unique information beyond their constituents.
+
+{\bf U-shaped $\Rsq$ across layers.}
+$\Rsq$ starts high at layer 0 (0.940), drops to a minimum at layers 4--5 (${\sim}0.800$), and recovers to 0.937 at layer 11.
+This suggests that intermediate layers perform the most compound-specific processing, potentially encoding compound-specific semantics, before later layers restore more compositional representations for next-token prediction.
+
+\subsection{No Token Erasure in \gpttwo}
+\label{sec:results_exp3}
+
+\para{Probe 1 results (token erasure).}
+The token identity probe achieves \emph{perfect accuracy} (1.000) at every layer from 0 to 11.
+The identity of $\wone$ is fully recoverable from the hidden state at the $\wtwo$ position throughout the network.
+This stands in contrast to \citet{feucht2024token}, who found that token identity accuracy drops from ${\sim}100\%$ at layer 0 to ${\sim}20\%$ by layer 9 in \llamatwo for named entities.
+
+\para{Probe 2 results (compound detection).}
+The compound-vs-control probe shows that compound-specific information emerges early and peaks in later layers (\tabref{tab:probing}).
+Accuracy is 70.6\% at layer 0, rises above 90\% by layer 2, and peaks at 92.2\% at layer 8.
+The slight decrease to 85.1\% at layer 11 may reflect the model optimizing late-layer representations for next-token prediction rather than maintaining compound-specific information.
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{@{}lcccccc@{}}
+        \toprule
+        \textbf{Layer} & 0 & 2 & 4 & 7 & 8 & 11 \\
+        \midrule
+        Token erasure (Probe 1) & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\
+        Compound detection (Probe 2) & 0.706 & 0.902 & 0.894 & 0.918 & {\bf 0.922} & 0.851 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Probing accuracy at selected layers. Probe 1 tests whether $\wone$ identity can be recovered from the $\wtwo$ position (perfect accuracy = no erasure). Probe 2 tests whether compound versus control context can be distinguished. Peak compound detection accuracy is {\bf 92.2\%} at layer 8.}
+    \label{tab:probing}
+\end{table}
+
+\subsection{Attention Patterns}
+\label{sec:results_exp4}
+
+Compound contexts show significantly more attention from $\wtwo$ to $\wone$ in layer 0 ($p = 0.011$), but this pattern reverses in later layers (7--8), where control contexts show more attention from $\wtwo$ to the preceding word ($p < 0.001$).
+This suggests that the model uses early-layer attention to establish the compound relationship, then shifts to different processing in later layers once the compound context has been encoded into the residual stream.
+
+\subsection{Validation on \gptmed}
+\label{sec:validation}
+
+Key findings replicate on \gptmed (355M parameters, 24 layers).
+\tabref{tab:validation} shows that the larger model produces similar or stronger next-token prediction boosting and comparable $\Rsq$ values.
+The pattern of compositional storage is robust to a $2.9\times$ increase in model size.
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{@{}lcccc@{}}
+        \toprule
+        \multirow{2}{*}{\textbf{Compound}} & \multicolumn{2}{c}{\textbf{Boost}} & \multicolumn{2}{c}{$\Rsq$} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        & \gpttwo & \gptmed & \gpttwo & \gptmed \\
+        \midrule
+        washing machine & $4{,}963\times$ & $25{,}303\times$ & 0.917 & 0.899 \\
+        swimming pool & $549\times$ & $615\times$ & 0.924 & 0.932 \\
+        hot dog & $45\times$ & $116\times$ & 0.888 & 0.897 \\
+        coffee table & $7\times$ & $4\times$ & 0.938 & 0.923 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Validation on \gptmed. Next-token prediction boost ratios and $\Rsq$ reconstruction scores are comparable or stronger than \gpttwo, confirming that compositional storage is robust to model scale.}
+    \label{tab:validation}
+\end{table}

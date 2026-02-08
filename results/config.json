@@ -1,0 +1,9 @@
+{
+  "seed": 42,
+  "model": "gpt2",
+  "n_compounds": 19,
+  "n_templates": 8,
+  "device": "cuda:0",
+  "python_version": "3.12.2 | packaged by Anaconda, Inc. | (main, Feb 27 2024, 17:35:02) [GCC 11.2.0]",
+  "torch_version": "2.10.0+cu128"
+}

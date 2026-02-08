@@ -1,0 +1,668 @@
+[
+  {
+    "compound": "washing machine",
+    "word1": "washing",
+    "word2": "machine",
+    "compositionality": 4,
+    "p_word2_compound_mean": 0.8269828483462334,
+    "p_word2_compound_std": 0.06648733735324863,
+    "rank_compound_mean": 1.0,
+    "p_word2_control_mean": 0.00016661743848089827,
+    "p_word2_control_std": 0.00010995010562964845,
+    "rank_control_mean": 924.0,
+    "p_word2_unconditional": 3.725207716342993e-05,
+    "rank_unconditional": 4379,
+    "boost_ratio": 4963.363114245944,
+    "top5_after_word1": [
+      [
+        "machine",
+        0.730228841304779
+      ],
+      [
+        "machines",
+        0.04699769616127014
+      ],
+      [
+        "-",
+        0.027248909696936607
+      ],
+      [
+        "ton",
+        0.02481122314929962
+      ],
+      [
+        "of",
+        0.015536018647253513
+      ]
+    ]
+  },
+  {
+    "compound": "coffee table",
+    "word1": "coffee",
+    "word2": "table",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.06317822623532265,
+    "p_word2_compound_std": 0.05545753695375613,
+    "rank_compound_mean": 4.125,
+    "p_word2_control_mean": 0.009115534543525428,
+    "p_word2_control_std": 0.0038621638550782626,
+    "rank_control_mean": 14.125,
+    "p_word2_unconditional": 0.00014533924695570022,
+    "rank_unconditional": 1189,
+    "boost_ratio": 6.930830653282623,
+    "top5_after_word1": [
+      [
+        "shop",
+        0.09250934422016144
+      ],
+      [
+        "-",
+        0.04387165233492851
+      ],
+      [
+        "is",
+        0.03568312153220177
+      ],
+      [
+        "maker",
+        0.03213730826973915
+      ],
+      [
+        "industry",
+        0.025313835591077805
+      ]
+    ]
+  },
+  {
+    "compound": "swimming pool",
+    "word1": "swimming",
+    "word2": "pool",
+    "compositionality": 4,
+    "p_word2_compound_mean": 0.6258140131831169,
+    "p_word2_compound_std": 0.1411081533670163,
+    "rank_compound_mean": 1.0,
+    "p_word2_control_mean": 0.001139053150836844,
+    "p_word2_control_std": 0.0005808828091112413,
+    "rank_control_mean": 125.125,
+    "p_word2_unconditional": 3.125678631477058e-05,
+    "rank_unconditional": 5103,
+    "boost_ratio": 549.4159888178541,
+    "top5_after_word1": [
+      [
+        "pool",
+        0.48997950553894043
+      ],
+      [
+        "pools",
+        0.021213199943304062
+      ],
+      [
+        "team",
+        0.019725432619452477
+      ],
+      [
+        "hole",
+        0.013962729834020138
+      ],
+      [
+        "-",
+        0.01216582115739584
+      ]
+    ]
+  },
+  {
+    "compound": "parking lot",
+    "word1": "parking",
+    "word2": "lot",
+    "compositionality": 4,
+    "p_word2_compound_mean": 0.3215220384299755,
+    "p_word2_compound_std": 0.1470232137079297,
+    "rank_compound_mean": 1.125,
+    "p_word2_control_mean": 0.011591985065024346,
+    "p_word2_control_std": 0.00862028037423569,
+    "rank_control_mean": 14.375,
+    "p_word2_unconditional": 5.218208025326021e-05,
+    "rank_unconditional": 3250,
+    "boost_ratio": 27.736581493715047,
+    "top5_after_word1": [
+      [
+        "lot",
+        0.35225945711135864
+      ],
+      [
+        "garage",
+        0.06771009415388107
+      ],
+      [
+        "meter",
+        0.03595860302448273
+      ],
+      [
+        "lots",
+        0.029041292145848274
+      ],
+      [
+        "space",
+        0.027786150574684143
+      ]
+    ]
+  },
+  {
+    "compound": "hot dog",
+    "word1": "hot",
+    "word2": "dog",
+    "compositionality": 1,
+    "p_word2_compound_mean": 0.09731894975993782,
+    "p_word2_compound_std": 0.07480803883093716,
+    "rank_compound_mean": 3.5,
+    "p_word2_control_mean": 0.002176724310629652,
+    "p_word2_control_std": 0.002630548143046674,
+    "rank_control_mean": 142.5,
+    "p_word2_unconditional": 0.00019099656492471695,
+    "rank_unconditional": 857,
+    "boost_ratio": 44.70890010494107,
+    "top5_after_word1": [
+      [
+        "new",
+        0.04977031424641609
+      ],
+      [
+        "topic",
+        0.04880962148308754
+      ],
+      [
+        "dog",
+        0.043263308703899384
+      ],
+      [
+        "-",
+        0.04032956808805466
+      ],
+      [
+        "spot",
+        0.03633541986346245
+      ]
+    ]
+  },
+  {
+    "compound": "shooting star",
+    "word1": "shooting",
+    "word2": "star",
+    "compositionality": 2,
+    "p_word2_compound_mean": 0.030658055788080674,
+    "p_word2_compound_std": 0.05759793001125904,
+    "rank_compound_mean": 90.125,
+    "p_word2_control_mean": 0.010297040149453096,
+    "p_word2_control_std": 0.008222679740323507,
+    "rank_control_mean": 17.625,
+    "p_word2_unconditional": 0.00019066179811488837,
+    "rank_unconditional": 859,
+    "boost_ratio": 2.977365858839446,
+    "top5_after_word1": [
+      [
+        "of",
+        0.23589400947093964
+      ],
+      [
+        "death",
+        0.10614380240440369
+      ],
+      [
+        "at",
+        0.06633750349283218
+      ],
+      [
+        "was",
+        0.04424748942255974
+      ],
+      [
+        "in",
+        0.03174677863717079
+      ]
+    ]
+  },
+  {
+    "compound": "living room",
+    "word1": "living",
+    "word2": "room",
+    "compositionality": 3,
+    "p_word2_compound_mean": 0.2611475649755448,
+    "p_word2_compound_std": 0.20318450309863462,
+    "rank_compound_mean": 2.375,
+    "p_word2_control_mean": 0.0016326921904692426,
+    "p_word2_control_std": 0.0009502189936221617,
+    "rank_control_mean": 97.75,
+    "p_word2_unconditional": 0.00011548220936674625,
+    "rank_unconditional": 1500,
+    "boost_ratio": 159.9490501026344,
+    "top5_after_word1": [
+      [
+        "room",
+        0.3126535415649414
+      ],
+      [
+        "-",
+        0.027371127158403397
+      ],
+      [
+        "wage",
+        0.023763854056596756
+      ],
+      [
+        "world",
+        0.02095055766403675
+      ],
+      [
+        "rooms",
+        0.02028725855052471
+      ]
+    ]
+  },
+  {
+    "compound": "driving license",
+    "word1": "driving",
+    "word2": "license",
+    "compositionality": 4,
+    "p_word2_compound_mean": 0.03642687390174615,
+    "p_word2_compound_std": 0.0781964296267122,
+    "rank_compound_mean": 118.5,
+    "p_word2_control_mean": 0.00016504187169630313,
+    "p_word2_control_std": 0.00012181119453659987,
+    "rank_control_mean": 1324.625,
+    "p_word2_unconditional": 3.362124698469415e-05,
+    "rank_unconditional": 4805,
+    "boost_ratio": 220.71292289253705,
+    "top5_after_word1": [
+      [
+        "force",
+        0.5178152918815613
+      ],
+      [
+        "forces",
+        0.035223595798015594
+      ],
+      [
+        "seat",
+        0.008882889524102211
+      ],
+      [
+        "-",
+        0.007729970850050449
+      ],
+      [
+        "season",
+        0.007247287314385176
+      ]
+    ]
+  },
+  {
+    "compound": "guinea pig",
+    "word1": "guinea",
+    "word2": "pig",
+    "compositionality": 2,
+    "p_word2_compound_mean": 0.8326333537697792,
+    "p_word2_compound_std": 0.12999676793975048,
+    "rank_compound_mean": 1.0,
+    "p_word2_control_mean": 0.00011511043135215004,
+    "p_word2_control_std": 0.00011584593364480723,
+    "rank_control_mean": 1755.375,
+    "p_word2_unconditional": 2.2043614080757834e-05,
+    "rank_unconditional": 6754,
+    "boost_ratio": 7233.344050484502,
+    "top5_after_word1": [
+      [
+        "pig",
+        0.7133107781410217
+      ],
+      [
+        "pigs",
+        0.25150370597839355
+      ],
+      [
+        "worm",
+        0.00870364997535944
+      ],
+      [
+        "-",
+        0.00751386396586895
+      ],
+      [
+        "p",
+        0.0014555444940924644
+      ]
+    ]
+  },
+  {
+    "compound": "brick house",
+    "word1": "brick",
+    "word2": "house",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.0273390561924316,
+    "p_word2_compound_std": 0.03845212277592603,
+    "rank_compound_mean": 11.125,
+    "p_word2_control_mean": 0.004749744655782706,
+    "p_word2_control_std": 0.004488538206355734,
+    "rank_control_mean": 62.375,
+    "p_word2_unconditional": 0.0003546841908246279,
+    "rank_unconditional": 401,
+    "boost_ratio": 5.755900195423541,
+    "top5_after_word1": [
+      [
+        "-",
+        0.1695854514837265
+      ],
+      [
+        "wall",
+        0.07634031027555466
+      ],
+      [
+        "and",
+        0.05920436978340149
+      ],
+      [
+        "layer",
+        0.03572972118854523
+      ],
+      [
+        "walls",
+        0.016635365784168243
+      ]
+    ]
+  },
+  {
+    "compound": "mountain cabin",
+    "word1": "mountain",
+    "word2": "cabin",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.003970250651036622,
+    "p_word2_compound_std": 0.008535845175348269,
+    "rank_compound_mean": 149.0,
+    "p_word2_control_mean": 0.0013737074186792597,
+    "p_word2_control_std": 0.0018362525323706504,
+    "rank_control_mean": 304.625,
+    "p_word2_unconditional": 2.0811443391721696e-05,
+    "rank_unconditional": 7065,
+    "boost_ratio": 2.890171951501717,
+    "top5_after_word1": [
+      [
+        "of",
+        0.13376234471797943
+      ],
+      [
+        "is",
+        0.05922611802816391
+      ],
+      [
+        "lion",
+        0.038642074912786484
+      ],
+      [
+        "range",
+        0.03339564800262451
+      ],
+      [
+        "bike",
+        0.03298741579055786
+      ]
+    ]
+  },
+  {
+    "compound": "garden hose",
+    "word1": "garden",
+    "word2": "hose",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.023497475223848596,
+    "p_word2_compound_std": 0.019131235943215478,
+    "rank_compound_mean": 12.0,
+    "p_word2_control_mean": 0.00011726905901809914,
+    "p_word2_control_std": 0.00017076565383346317,
+    "rank_control_mean": 2101.125,
+    "p_word2_unconditional": 2.774694848994841e-06,
+    "rank_unconditional": 21802,
+    "boost_ratio": 200.3723353849205,
+    "top5_after_word1": [
+      [
+        "is",
+        0.12625540792942047
+      ],
+      [
+        "of",
+        0.09853366762399673
+      ],
+      [
+        "was",
+        0.026434805244207382
+      ],
+      [
+        "-",
+        0.024371888488531113
+      ],
+      [
+        "has",
+        0.022113896906375885
+      ]
+    ]
+  },
+  {
+    "compound": "water bottle",
+    "word1": "water",
+    "word2": "bottle",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.06561238691210747,
+    "p_word2_compound_std": 0.12257386770755017,
+    "rank_compound_mean": 16.625,
+    "p_word2_control_mean": 0.01755164988571778,
+    "p_word2_control_std": 0.012583803683652544,
+    "rank_control_mean": 11.375,
+    "p_word2_unconditional": 2.2496677047456615e-05,
+    "rank_unconditional": 6647,
+    "boost_ratio": 3.7382461101561697,
+    "top5_after_word1": [
+      [
+        "is",
+        0.0730445384979248
+      ],
+      [
+        "in",
+        0.04436446726322174
+      ],
+      [
+        "quality",
+        0.032052744179964066
+      ],
+      [
+        "level",
+        0.02573067508637905
+      ],
+      [
+        "supply",
+        0.02433597855269909
+      ]
+    ]
+  },
+  {
+    "compound": "steel bridge",
+    "word1": "steel",
+    "word2": "bridge",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.004612584976712242,
+    "p_word2_compound_std": 0.00284770825288304,
+    "rank_compound_mean": 53.375,
+    "p_word2_control_mean": 0.00036686771022687026,
+    "p_word2_control_std": 0.0005924621236677544,
+    "rank_control_mean": 992.25,
+    "p_word2_unconditional": 7.500515494029969e-05,
+    "rank_unconditional": 2322,
+    "boost_ratio": 12.572883489418647,
+    "top5_after_word1": [
+      [
+        "-",
+        0.05929186940193176
+      ],
+      [
+        "and",
+        0.02407527156174183
+      ],
+      [
+        "is",
+        0.021648047491908073
+      ],
+      [
+        "head",
+        0.013353164307773113
+      ],
+      [
+        "was",
+        0.012433585710823536
+      ]
+    ]
+  },
+  {
+    "compound": "chocolate cake",
+    "word1": "chocolate",
+    "word2": "cake",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.03564391250256449,
+    "p_word2_compound_std": 0.0276797935672847,
+    "rank_compound_mean": 5.25,
+    "p_word2_control_mean": 0.0002537923419367871,
+    "p_word2_control_std": 0.0002930146108324749,
+    "rank_control_mean": 978.0,
+    "p_word2_unconditional": 1.8075579646392725e-05,
+    "rank_unconditional": 7893,
+    "boost_ratio": 140.4451853454366,
+    "top5_after_word1": [
+      [
+        "chip",
+        0.09177233278751373
+      ],
+      [
+        "-",
+        0.053206171840429306
+      ],
+      [
+        "bar",
+        0.043144047260284424
+      ],
+      [
+        "is",
+        0.036515653133392334
+      ],
+      [
+        "and",
+        0.023663634434342384
+      ]
+    ]
+  },
+  {
+    "compound": "door handle",
+    "word1": "door",
+    "word2": "handle",
+    "compositionality": 5,
+    "p_word2_compound_mean": 0.006839837555162376,
+    "p_word2_compound_std": 0.008475496040965225,
+    "rank_compound_mean": 41.875,
+    "p_word2_control_mean": 0.0007414505180349806,
+    "p_word2_control_std": 0.0005761998850490687,
+    "rank_control_mean": 376.125,
+    "p_word2_unconditional": 2.9087206712574698e-05,
+    "rank_unconditional": 5434,
+    "boost_ratio": 9.224941366673482,
+    "top5_after_word1": [
+      [
+        "to",
+        0.23827151954174042
+      ],
+      [
+        "is",
+        0.11264234036207199
+      ],
+      [
+        "bell",
+        0.07778160274028778
+      ],
+      [
+        "was",
+        0.07375889271497726
+      ],
+      [
+        "of",
+        0.06876540184020996
+      ]
+    ]
+  },
+  {
+    "compound": "snowman",
+    "word1": "snow",
+    "word2": "man",
+    "compositionality": 4,
+    "p_word2_compound_mean": 0.0037972993195580784,
+    "p_word2_compound_std": 0.0037653914386277906,
+    "rank_compound_mean": 62.875,
+    "p_word2_control_mean": 0.042703608865849674,
+    "p_word2_control_std": 0.043295975547782146,
+    "rank_control_mean": 7.125,
+    "p_word2_unconditional": 0.002369594294577837,
+    "rank_unconditional": 29,
+    "boost_ratio": 0.08892221103577035,
+    "top5_after_word1": [
+      [
+        "is",
+        0.07692946493625641
+      ],
+      [
+        "-",
+        0.04975544661283493
+      ],
+      [
+        "was",
+        0.045950088649988174
+      ],
+      [
+        "storm",
+        0.03970092907547951
+      ],
+      [
+        "has",
+        0.03500615805387497
+      ]
+    ]
+  },
+  {
+    "compound": "sunflower",
+    "word1": "sun",
+    "word2": "flower",
+    "compositionality": 4,
+    "p_word2_compound_mean": 9.857231202659023e-05,
+    "p_word2_compound_std": 0.0001394172367734616,
+    "rank_compound_mean": 1672.875,
+    "p_word2_control_mean": 0.0003830182331512333,
+    "p_word2_control_std": 0.00039249993427171667,
+    "rank_control_mean": 705.625,
+    "p_word2_unconditional": 1.2343312846496701e-05,
+    "rank_unconditional": 10322,
+    "boost_ratio": 0.25735670914566966,
+    "top5_after_word1": [
+      [
+        "is",
+        0.18628746271133423
+      ],
+      [
+        "was",
+        0.09966486692428589
+      ],
+      [
+        "has",
+        0.07359444350004196
+      ],
+      [
+        "'s",
+        0.04474964737892151
+      ],
+      [
+        "rises",
+        0.04387979954481125
+      ]
+    ]
+  }
+]

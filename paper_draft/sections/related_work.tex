@@ -1,0 +1,35 @@
+\section{Related Work}
+\label{sec:related_work}
+
+\para{Linear representations in LLMs.}
+The linear representation hypothesis posits that concepts correspond to directions in a model's activation space.
+\citet{park2024linear} formalized three variants---subspace, measurement, and intervention---and tested 27 single-token concepts in \llamatwo, finding strong linear structure for 26 of 27.
+The only failure was the compositional relation ``thing$\to$part,'' hinting that compositional concepts may not follow the same pattern.
+\citet{gurnee2023language} showed that LLMs develop linear representations of space and time, while \citet{merullo2023language} demonstrated that LLMs implement Word2Vec-style vector arithmetic for relational tasks.
+Unlike these studies, which focus on single-token concepts or simple relations, we directly test whether \emph{multi-token} compound nouns have independent directions or are compositionally derived from their parts.
+
+\para{Superposition and polysemanticity.}
+\citet{elhage2022superposition} established that neural networks store more features than they have dimensions by packing sparse features as nearly-orthogonal directions---the superposition hypothesis.
+\citet{scherlis2022polysemanticity} showed that polysemanticity emerges naturally from capacity constraints.
+These results imply that compound concepts like ``washing machine,'' being relatively sparse in training data, are almost certainly stored in superposition with other concepts rather than in dedicated neurons.
+Our work tests a complementary question: whether compound concepts have \emph{any} dedicated direction (even in superposition) or are entirely derived from constituent directions.
+
+\para{Sparse autoencoders and feature discovery.}
+Sparse autoencoders (SAEs) decompose polysemantic activations into interpretable features~\citep{cunningham2023sparse,gao2024scaling,rajamanoharan2024gated}.
+Pre-trained SAEs are now available for multiple model families~\citep{lieberum2024gemma,he2024llama}.
+However, \citet{chanin2024absorption} identified the feature absorption problem: when features form hierarchies, SAEs absorb parent features into child features, creating unreliable classifiers.
+\citet{chanin2025feature} further showed that narrow SAEs merge correlated features.
+These findings suggest that SAE features for compounds may be unreliable---motivating our direct analysis of residual stream directions rather than relying on SAE decompositions.
+
+\para{Multi-token concept processing.}
+\citet{feucht2024token} showed that at the last token position of multi-token entities, information about preceding tokens is rapidly erased in layers 1--9 of \llamatwo, suggesting an ``implicit vocabulary'' of multi-token items.
+We apply a similar probing methodology to compound nouns in \gpttwo and find a strikingly different result: no token erasure occurs, suggesting that compound nouns and named entities may be processed differently, or that model scale plays a role.
+\citet{geva2022transformer} showed that feed-forward layers build next-token predictions by promoting concepts in the vocabulary space, which is consistent with our finding that FFN layers gradually increase $P(\text{``machine''})$ after processing ``washing.''
+
+\para{Compositionality and idiomaticity.}
+\citet{ormerod2024kitchen} used representational similarity analysis to compare transformer representations of compound nouns with human judgments, finding that compounds processed together have different representations than constituents processed separately in BERT-family models.
+Our work extends this to autoregressive models and directly quantifies the compositional versus unique components of compound representations.
+\citet{aljaafari2024interpreting} found that no specific layer integrates tokens into unified semantic representations based on constituent parts, with information distributed across layers---consistent with our U-shaped $\Rsq$ pattern across layers.
+\citet{garcia2021probing} tested whether BERT captures idiomatic versus compositional meanings and found that contextualized models fail to accurately distinguish them, prioritizing lexical overlap.
+\citet{dankers2022can} showed that transformers tend to over-generate compositional translations of idioms, suggesting a bias toward compositional processing.
+Building on these findings, we provide the first quantitative decomposition of compound representations into compositional and unique components in autoregressive LLMs.

@@ -1,0 +1,140 @@
+\begin{thebibliography}{20}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Aljaafari et~al.(2024)Aljaafari, Belinkov, and
+  Barez]{aljaafari2024interpreting}
+Nura Aljaafari, Yonatan Belinkov, and Fazl Barez.
+\newblock Interpreting token compositionality in {LLMs}: A robustness analysis.
+\newblock \emph{arXiv preprint arXiv:2410.12924}, 2024.
+
+\bibitem[Chanin et~al.(2024)Chanin, Barez, Karvonen, and
+  Nanda]{chanin2024absorption}
+David Chanin, Fazl Barez, Adamk Karvonen, and Neel Nanda.
+\newblock A is for absorption: Studying feature splitting and absorption in
+  sparse autoencoders.
+\newblock \emph{arXiv preprint arXiv:2409.14507}, 2024.
+
+\bibitem[Chanin et~al.(2025)Chanin, Barez, and Karvonen]{chanin2025feature}
+David Chanin, Fazl Barez, and Adam Karvonen.
+\newblock Feature hedging: On the role of feature redundancy in sparse
+  autoencoders.
+\newblock \emph{arXiv preprint arXiv:2503.01370}, 2025.
+
+\bibitem[Cunningham et~al.(2023)Cunningham, Ewart, Riggs, Huben, and
+  Sharkey]{cunningham2023sparse}
+Hoagy Cunningham, Aidan Ewart, Logan Riggs, Robert Huben, and Lee Sharkey.
+\newblock Sparse autoencoders find highly interpretable features in language
+  models.
+\newblock \emph{arXiv preprint arXiv:2309.08600}, 2023.
+
+\bibitem[Dankers et~al.(2022)Dankers, Lucas, and Titov]{dankers2022can}
+Verna Dankers, Christopher~G Lucas, and Ivan Titov.
+\newblock Can transformer be too compositional? analysing idiom processing in
+  neural machine translation.
+\newblock \emph{arXiv preprint arXiv:2205.15301}, 2022.
+
+\bibitem[Elhage et~al.(2022)Elhage, Hume, Olsson, Schiefer, Henighan, Kravec,
+  Hatfield-Dodds, Lasenby, Drain, Chen, et~al.]{elhage2022superposition}
+Nelson Elhage, Tristan Hume, Catherine Olsson, Nicholas Schiefer, Tom Henighan,
+  Shauna Kravec, Zac Hatfield-Dodds, Robert Lasenby, Dawn Drain, Carol Chen,
+  et~al.
+\newblock Toy models of superposition.
+\newblock \emph{arXiv preprint arXiv:2209.10652}, 2022.
+
+\bibitem[Feucht et~al.(2024)Feucht, Torn{\'e}, and Bau]{feucht2024token}
+Sheridan Feucht, David Torn{\'e}, and David Bau.
+\newblock Token erasure as a footprint of implicit vocabulary items in {LLMs}.
+\newblock \emph{arXiv preprint arXiv:2406.20086}, 2024.
+
+\bibitem[Gao et~al.(2024)Gao, la~Tour, Tillman, Goh, Troll, Radford, Sutskever,
+  Leike, and Wu]{gao2024scaling}
+Leo Gao, Tom~Dupr{\'e} la~Tour, Henk Tillman, Gabriel Goh, Rajan Troll, Alec
+  Radford, Ilya Sutskever, Jan Leike, and Jeffrey Wu.
+\newblock Scaling and evaluating sparse autoencoders.
+\newblock \emph{arXiv preprint arXiv:2406.04093}, 2024.
+
+\bibitem[Garcia et~al.(2021)Garcia, Kramer~Vieira, Scarton, Idiart, and
+  Villavicencio]{garcia2021probing}
+Marcos Garcia, Tiago Kramer~Vieira, Carolina Scarton, Marco Idiart, and Aline
+  Villavicencio.
+\newblock Probing for idiomaticity in vector space models.
+\newblock In \emph{Proceedings of the 16th Conference of the European Chapter
+  of the Association for Computational Linguistics}, 2021.
+
+\bibitem[Geva et~al.(2022)Geva, Caciularu, Wang, and
+  Goldberg]{geva2022transformer}
+Mor Geva, Avi Caciularu, Kevin~Ro Wang, and Yoav Goldberg.
+\newblock Transformer feed-forward layers build predictions by promoting
+  concepts in the vocabulary space.
+\newblock \emph{arXiv preprint arXiv:2203.14680}, 2022.
+
+\bibitem[Gurnee and Tegmark(2023)]{gurnee2023language}
+Wes Gurnee and Max Tegmark.
+\newblock Language models represent space and time.
+\newblock \emph{arXiv preprint arXiv:2310.02207}, 2023.
+
+\bibitem[He et~al.(2024)He, Ge, Chen, and Liu]{he2024llama}
+Zhengfu He, Wentao Ge, Muhao Chen, and Zhuowan Liu.
+\newblock Llama scope: Extracting millions of features from {Llama-3.1-8B} with
+  sparse autoencoders.
+\newblock \emph{arXiv preprint arXiv:2410.20526}, 2024.
+
+\bibitem[Lieberum et~al.(2024)Lieberum, Rajamanoharan, Conmy, Smith, Sonnerat,
+  Varma, Kram{\'a}r, Dragan, Shah, and Nanda]{lieberum2024gemma}
+Tom Lieberum, Senthooran Rajamanoharan, Arthur Conmy, Lewis Smith, Nicolas
+  Sonnerat, Vikrant Varma, J{\'a}nos Kram{\'a}r, Anca Dragan, Rohin Shah, and
+  Neel Nanda.
+\newblock Gemma scope: Open sparse autoencoders everywhere all at once on
+  {Gemma} 2.
+\newblock \emph{arXiv preprint arXiv:2408.05147}, 2024.
+
+\bibitem[Merullo et~al.(2023)Merullo, Eickhoff, and
+  Pavlick]{merullo2023language}
+Jack Merullo, Carsten Eickhoff, and Ellie Pavlick.
+\newblock Language models implement simple word2vec-style vector arithmetic.
+\newblock \emph{arXiv preprint arXiv:2305.16130}, 2023.
+
+\bibitem[Nanda and Bloom(2022)]{nanda2022transformerlens}
+Neel Nanda and Joseph Bloom.
+\newblock {TransformerLens}.
+\newblock 2022.
+\newblock \url{https://github.com/neelnanda-io/TransformerLens}.
+
+\bibitem[Ormerod et~al.(2024)Ormerod, Maldonado, and
+  Klinger]{ormerod2024kitchen}
+Mark Ormerod, Jes{\'u}s Maldonado, and Roman Klinger.
+\newblock How is a ``kitchen chair'' like a ``farm horse''? exploring the
+  representation of compound nominals in transformer-based language models.
+\newblock \emph{Computational Linguistics}, 50\penalty0 (1), 2024.
+
+\bibitem[Park et~al.(2024)Park, Choe, and Veitch]{park2024linear}
+Kiho Park, Yo~Joong Choe, and Victor Veitch.
+\newblock The linear representation hypothesis and the geometry of large
+  language models.
+\newblock \emph{arXiv preprint arXiv:2311.03658}, 2024.
+
+\bibitem[Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, and
+  Sutskever]{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya
+  Sutskever.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 2019.
+
+\bibitem[Rajamanoharan et~al.(2024)Rajamanoharan, Conmy, Smith, Lieberum,
+  Varma, Kram{\'a}r, Shah, and Nanda]{rajamanoharan2024gated}
+Senthooran Rajamanoharan, Arthur Conmy, Lewis Smith, Tom Lieberum, Vikrant
+  Varma, J{\'a}nos Kram{\'a}r, Rohin Shah, and Neel Nanda.
+\newblock Improving dictionary learning with gated sparse autoencoders.
+\newblock \emph{arXiv preprint arXiv:2404.16014}, 2024.
+
+\bibitem[Scherlis et~al.(2022)Scherlis, Sachan, Jermyn, Benton, and
+  Shlegeris]{scherlis2022polysemanticity}
+Adam Scherlis, Kshitij Sachan, Adam~S Jermyn, Joe Benton, and Buck Shlegeris.
+\newblock Polysemanticity and capacity in neural networks.
+\newblock \emph{arXiv preprint arXiv:2210.01892}, 2022.
+
+\end{thebibliography}

@@ -1,0 +1,35 @@
+\section{Introduction}
+\label{sec:introduction}
+
+How does a language model know that ``washing machine'' refers to a household appliance rather than a machine that happens to be washing?
+The linear representation hypothesis~\citep{park2024linear} suggests that concepts correspond to directions in a model's activation space, but this has only been tested for single-token concepts.
+Multi-token compound nouns---``washing machine,'' ``hot dog,'' ``swimming pool''---pose a fundamental representational challenge: there are far more compound concepts in language than dimensions in a model's residual stream.
+\gpttwo has 768 dimensions; even the superposition hypothesis~\citep{elhage2022superposition}, which allows ${\sim}10\times$ more features than dimensions through near-orthogonal packing, cannot accommodate the millions of possible compounds.
+
+{\bf How, then, are compound concepts stored?}
+Three possibilities exist.
+First, the model may develop \emph{holistic} representations---unique directions for ``washing machine'' assembled at the second token position.
+Second, the model may rely on \emph{compositional} processing, where ``washing'' has a direction that makes ``machine'' contextually likely, with no unified compound direction.
+Third, a \emph{hybrid} of both mechanisms may operate.
+
+Prior work has not addressed this question directly.
+\citet{park2024linear} tested 27 single-token concepts in \llamatwo but never multi-token compounds.
+\citet{feucht2024token} showed that named entities exhibit token erasure---information about preceding tokens is rapidly transformed at the last token position---but studied proper nouns in Llama-2, not common compound nouns in smaller models.
+\citet{ormerod2024kitchen} probed compound noun semantics in BERT, a masked language model, but not in autoregressive models where the sequential processing of compounds is fundamentally different.
+No study has directly compared compound concept directions against constituent word directions in the residual stream of autoregressive transformers.
+
+We address this gap with four complementary experiments on \gpttwo (124M parameters, 12 layers, $\dmodel = 768$), examining 19 compound nouns that span the full compositionality spectrum from transparent (``steel bridge'') to idiomatic (``hot dog'').
+Our experiments measure (1) next-token prediction boosting, (2) linear reconstructability of compound directions from constituents, (3) layer-wise probing for token erasure and compound-specific information, and (4) attention patterns between compound constituents.
+We validate key findings on \gptmed (355M parameters, 24 layers).
+
+Our results support the compositional hypothesis.
+The compound direction at the second token position is 93.7\% reconstructable as a linear combination of constituent directions ($\Rsq = 0.937 \pm 0.020$).
+The primary mechanism is next-token prediction boosting: seeing ``washing'' makes ``machine'' the top prediction with $P = 0.827$, a $4{,}963\times$ boost over the control word ``red.''
+We find no token erasure---constituent identity is perfectly recoverable at every layer---and the 6\% of compound representations not explained by constituents is sufficient to distinguish compound from non-compound contexts (92.2\% probe accuracy) but does not constitute a dedicated compound direction.
+
+In summary, we make the following contributions:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item We conduct the first systematic analysis of how compound nouns are represented in the residual stream of autoregressive language models, testing holistic versus compositional storage across 19 compounds varying in compositionality.
+    \item We show that compound representations are 93.7\% linearly reconstructable from constituent word directions, with more idiomatic compounds requiring more unique capacity ($\Rsq = 0.888$ for ``hot dog'' vs.\ $0.965$ for ``steel bridge''; Spearman $\rho = 0.669$, $p = 0.006$).
+    \item We demonstrate that the dominant mechanism for compound processing is next-token prediction boosting (median $20\times$ boost), not the construction of holistic compound representations, and find no evidence of token erasure in \gpttwo---contradicting the implicit vocabulary hypothesis for this model class.
+\end{itemize}

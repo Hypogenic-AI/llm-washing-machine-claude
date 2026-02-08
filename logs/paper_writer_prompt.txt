@@ -1,0 +1,1031 @@
+You are an academic paper writer. Generate a complete NEURIPS style paper
+based on the experiment results provided.
+
+════════════════════════════════════════════════════════════════════════════════
+                         IMPORTANT: BEFORE YOU START
+════════════════════════════════════════════════════════════════════════════════
+
+Before writing any content, you MUST complete these steps:
+
+1. READ THE SKILL: Review the paper-writer skill at templates/skills/paper-writer/SKILL.md
+2. READ THE STYLE GUIDE: Study templates/paper_writing/lab_style_guide.md carefully
+3. REVIEW EXAMPLES: Browse paper_examples/ for formatting and language patterns:
+   - Look at sections/1.introduction.tex for language style
+   - Look at tables/*.tex for table formatting
+   - Look at commands/*.tex for macro usage
+4. USE COMMAND TEMPLATES: Copy templates/paper_writing/commands/ to paper_draft/commands/
+
+CRITICAL: Reference example papers for FORMATTING and LANGUAGE STYLE only.
+Do NOT copy content, phrasing, or narrative structure from the example papers.
+The examples are in a different research domain - focus only on presentation style.
+
+════════════════════════════════════════════════════════════════════════════════
+                            EXPERIMENT REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+# Where is &#34;Washing Machine&#34; Stored in LLMs?
+
+## 1. Executive Summary
+
+**Research question**: How do large language models represent compound concepts like &#34;washing machine&#34; — as unique directions in the residual stream, or compositionally through constituent words plus context?
+
+**Key finding**: LLMs use a **hybrid strategy** — compound concepts are primarily stored as compositional combinations of constituent word representations (R² = 0.937 for linear reconstruction from constituents), but the model also develops compound-specific contextual information that allows distinguishing compound from non-compound contexts (92.2% probe accuracy). The strongest mechanism is **next-token prediction boosting**: seeing &#34;washing&#34; raises P(&#34;machine&#34;) by a median of 20x compared to control words. Critically, no token erasure was observed — the identity of word1 is perfectly recoverable from the word2 position at every layer, contradicting the implicit vocabulary hypothesis for GPT-2.
+
+**Practical implications**: Compound concepts in LLMs are not stored as dedicated directions in the residual stream. Instead, the model leverages (1) statistical co-occurrence to boost word2 prediction after word1, and (2) contextual modulation of existing word representations to carry compound-specific semantics. This has direct consequences for concept editing, steering, and interpretability methods that assume concepts have unique linear directions.
+
+## 2. Goal
+
+### Hypothesis
+In large language models, specific compound concepts such as &#34;washing machine&#34; may not be represented by a unique direction or nearly orthogonal direction in the residual stream; instead, the model may store the concept of &#34;washing&#34; and rely on context to increase the likelihood of &#34;machine&#34; following it.
+
+### Why This Matters
+There are far more referenceable concepts in language (millions of compounds, proper nouns, technical terms) than there are dimensions in an LLM&#39;s residual stream (768 for GPT-2, 4096 for 7B models). The superposition hypothesis (Elhage et al., 2022) allows ~10x more features than dimensions through nearly-orthogonal packing, but even this falls short of the number of possible compound concepts. Understanding how models handle this representational bottleneck is fundamental to:
+- Mechanistic interpretability (what do directions in activation space mean?)
+- Concept editing (can we edit &#34;washing machine&#34; without affecting &#34;washing&#34; or &#34;machine&#34;?)
+- Linear representation theory (does the linear representation hypothesis hold for multi-token concepts?)
+
+### Gap in Existing Work
+- Park et al. (2024) tested 27 single-token concepts but never multi-token compounds
+- Feucht et al. (2024) showed token erasure for named entities but not common compound nouns
+- Ormerod et al. (2024) probed compound semantics in BERT (masked LM), not autoregressive models
+- No study has directly compared compound concept directions vs. constituent word directions in the residual stream of autoregressive models
+
+## 3. Data Construction
+
+### Dataset Description
+We used 19 compound nouns spanning the full compositionality spectrum, each paired with a control phrase that uses the same word2 but a different, non-compound word1.
+
+**Source**: Custom-designed test set based on the compound_nouns_test.jsonl dataset created for this project, with compositionality ratings from 1 (fully idiomatic) to 5 (fully compositional).
+
+### Example Samples
+
+| Compound | Word1 | Word2 | Compositionality | Control |
+|----------|-------|-------|-----------------|---------|
+| washing machine | washing | machine | 4 | red machine |
+| hot dog | hot | dog | 1 | big dog |
+| coffee table | coffee | table | 5 | wooden table |
+| guinea pig | guinea | pig | 2 | small pig |
+| mountain cabin | mountain | cabin | 5 | small cabin |
+
+### Data Quality
+- All compounds verified to tokenize as exactly two tokens in GPT-2&#39;s BPE vocabulary
+- 2 compounds skipped (blueberry: &#34;berry&#34; multi-token; guinea pig: &#34;guinea&#34; multi-token in some analyses)
+- Compositionality ratings assigned based on linguistic analysis (1=opaque/idiomatic, 5=transparent/compositional)
+- 8 sentence templates used per compound for context diversity
+
+### Sentence Templates
+Each compound was embedded in 8 diverse sentence templates:
+- &#34;The {compound} was&#34;
+- &#34;She bought a {compound} for&#34;
+- &#34;I saw a {compound} in the&#34;
+- &#34;There is a {compound} near the&#34;
+- &#34;He fixed the {compound} with&#34;
+- &#34;A new {compound} arrived&#34;
+- &#34;The old {compound} needed&#34;
+- &#34;We need a {compound} to&#34;
+
+## 4. Experiment Description
+
+### Methodology
+
+#### High-Level Approach
+We conducted four complementary experiments on GPT-2 (124M parameters, 12 layers, d_model=768), accessing internal activations via TransformerLens. Each experiment tests a different aspect of how compound concepts are represented:
+
+1. **Next-token prediction**: Does word1 boost P(word2)? How much?
+2. **Residual stream directions**: Can the compound direction be reconstructed from constituents?
+3. **Layer-wise probing**: Where do compound representations emerge?
+4. **Attention patterns**: Does word2 attend to word1 differently in compounds vs. controls?
+
+#### Why GPT-2?
+- Well-studied in interpretability research
+- Small enough for comprehensive analysis (all layers, all attention heads)
+- TransformerLens provides clean hook-based access to all internal activations
+- Results validated on GPT-2-medium (355M, 24 layers) for scale robustness
+
+### Implementation Details
+
+#### Tools and Libraries
+| Library | Version | Purpose |
+|---------|---------|---------|
+| Python | 3.12.2 | Runtime |
+| PyTorch | 2.10.0+cu128 | Tensor computation |
+| TransformerLens | 2.15.4 | Model internals access |
+| scikit-learn | - | Linear probes |
+| scipy | - | Statistical tests |
+| matplotlib | - | Visualization |
+
+#### Hardware
+- 2x NVIDIA GeForce RTX 3090 (24GB each)
+- Total experiment runtime: ~3 minutes for GPT-2, ~2 minutes for GPT-2-medium
+
+#### Hyperparameters
+
+| Parameter | Value | Justification |
+|-----------|-------|---------------|
+| Random seed | 42 | Reproducibility |
+| Probe regularization (C) | 1.0 | Default, adequate for small dataset |
+| Cross-validation folds | 5 | Standard, balances bias-variance |
+| Number of templates | 8 | Sufficient context diversity |
+| Number of isolation templates | 4 | Baseline word representations |
+
+### Experimental Protocol
+
+#### Experiment 1: Next-Token Prediction Analysis
+For each compound (word1, word2):
+1. Embed word1 in 8 templates and measure P(word2 | context + word1)
+2. Embed control_word1 in same templates and measure P(word2 | context + control_word1)
+3. Compute boost ratio = P(word2 | word1) / P(word2 | control_word1)
+4. Record rank of word2 among all vocabulary predictions
+
+#### Experiment 2: Residual Stream Direction Analysis
+1. Collect hidden states at the word2 position across 8 compound contexts per layer
+2. Collect hidden states for word1 and word2 in isolation (4 contexts each)
+3. Compute mean direction vectors for compound, word1, word2
+4. Test linear reconstruction: compound = α·word1 + β·word2 (least squares)
+5. Compute R², cosine similarities, and residual norm ratio
+
+#### Experiment 3: Layer-wise Probing
+1. Collect hidden states at word2 position for 120 compound and 136 control samples
+2. **Probe 1**: Train logistic regression to predict word1 identity from word2 position (tests token erasure)
+3. **Probe 2**: Train logistic regression to classify compound vs. control context
+
+#### Experiment 4: Attention Pattern Analysis
+1. For each compound and control context, extract attention weights at the word2 position
+2. Measure attention from word2 to word1 (compound) vs. word2 to previous word (control)
+3. Compare across layers and attention heads
+
+### Raw Results
+
+#### Experiment 1: Next-Token Prediction
+
+| Compound | P(w2\|w1) | Rank | P(w2\|ctrl) | Ctrl Rank | Boost | Top-5 after w1 |
+|----------|-----------|------|-------------|-----------|-------|----------------|
+| guinea pig | 0.8326 | 1 | 0.0001 | 1755 | 7233x | pig, pigs, worm, -, p |
+| washing machine | 0.8270 | 1 | 0.0002 | 924 | 4963x | machine, machines, -, ton, of |
+| swimming pool | 0.6258 | 1 | 0.0011 | 125 | 549x | pool, pools, team, hole, - |
+| parking lot | 0.3215 | 1 | 0.0116 | 14 | 28x | lot, garage, meter, lots, space |
+| living room | 0.2611 | 2 | 0.0016 | 98 | 160x | room, -, wage, world, rooms |
+| hot dog | 0.0973 | 4 | 0.0022 | 142 | 45x | new, topic, dog, -, spot |
+| coffee table | 0.0632 | 4 | 0.0091 | 14 | 7x | shop, -, is, maker, industry |
+| chocolate cake | 0.0356 | 5 | 0.0003 | 978 | 140x | chip, -, bar, is, and |
+| driving license | 0.0364 | 118 | 0.0002 | 1325 | 221x | force, forces, seat, -, season |
+| shooting star | 0.0307 | 90 | 0.0103 | 18 | 3x | of, death, at, was, in |
+| mountain cabin | 0.0040 | 149 | 0.0014 | 305 | 3x | of, is, lion, range, bike |
+| snowman | 0.0038 | 63 | 0.0427 | 7 | 0.1x | is, -, was, storm, has |
+| sunflower | 0.0001 | 1673 | 0.0004 | 706 | 0.3x | is, was, has, &#39;s, rises |
+
+**Key observation**: For strongly associated compounds, word2 is often the #1 prediction after word1 (washing→machine, swimming→pool, guinea→pig, parking→lot). For weakly associated compounds (snowman, sunflower), the control word actually predicts word2 better.
+
+#### Experiment 2: Residual Stream Directions (Final Layer)
+
+| Compound | R² | cos(C,w1) | cos(C,w2) | Residual |
+|----------|-----|-----------|-----------|----------|
+| steel bridge | 0.965 | 0.924 | 0.982 | 0.188 |
+| garden hose | 0.962 | 0.933 | 0.979 | 0.196 |
+| door handle | 0.958 | 0.949 | 0.976 | 0.206 |
+| mountain cabin | 0.956 | 0.937 | 0.975 | 0.209 |
+| chocolate cake | 0.953 | 0.944 | 0.975 | 0.216 |
+| shooting star | 0.944 | 0.929 | 0.960 | 0.236 |
+| brick house | 0.939 | 0.933 | 0.965 | 0.247 |
+| coffee table | 0.938 | 0.934 | 0.962 | 0.249 |
+| living room | 0.933 | 0.925 | 0.958 | 0.259 |
+| water bottle | 0.931 | 0.924 | 0.963 | 0.262 |
+| swimming pool | 0.924 | 0.932 | 0.957 | 0.276 |
+| driving license | 0.924 | 0.908 | 0.955 | 0.276 |
+| parking lot | 0.922 | 0.936 | 0.934 | 0.280 |
+| washing machine | 0.917 | 0.907 | 0.951 | 0.288 |
+| hot dog | 0.888 | 0.897 | 0.934 | 0.335 |
+
+**Mean R² = 0.937 ± 0.020**: The compound direction is very well explained by a linear combination of constituent directions. Only ~25% of the compound representation is &#34;unique&#34; (not explained by word1 + word2).
+
+#### Experiment 3: Probing Results
+
+**Probe 1 (Token Erasure)**: Perfect accuracy (1.000) at ALL layers. Word1 identity is fully recoverable from the word2 position at every layer. **No token erasure observed in GPT-2.**
+
+**Probe 2 (Compound vs. Control)**:
+
+| Layer | Accuracy |
+|-------|----------|
+| 0 | 0.706 |
+| 2 | 0.902 |
+| 4 | 0.894 |
+| 7 | 0.918 |
+| 8 | 0.922 (peak) |
+| 11 | 0.851 |
+
+Compound vs. control contexts are distinguishable from layer 2 onward (90%+ accuracy), peaking at layer 8.
+
+#### Experiment 4: Attention Patterns
+
+Compound contexts show significantly more attention from word2 to word1 in layer 0 (p=0.011), but this reverses in later layers (7-8) where control contexts show more attention to the previous word (p&lt;0.001).
+
+### Output Locations
+- Results JSON: `results/exp1_next_token.json`, `results/exp2_residual_directions.json`, `results/exp3_probing.json`, `results/exp4_attention.json`
+- Plots: `results/plots/`
+- Summary figure: `results/plots/summary_figure.png`
+- Configuration: `results/config.json`
+
+## 5. Result Analysis
+
+### Key Findings
+
+**Finding 1: The primary mechanism is next-token prediction boosting (strong support for compositional hypothesis).**
+Seeing &#34;washing&#34; makes &#34;machine&#34; the #1 prediction (P=0.827, rank 1), compared to P=0.0002 after &#34;red&#34; (the control). The median boost ratio across all compounds is 20.2x (95% CI: [4.7, 180.2]). This is statistically significant (Wilcoxon W=160, p=2.1e-4, Cohen&#39;s d=0.63).
+
+For the strongest compounds:
+- &#34;washing&#34; → P(&#34;machine&#34;) = 0.827 (rank 1)
+- &#34;guinea&#34; → P(&#34;pig&#34;) = 0.833 (rank 1)
+- &#34;swimming&#34; → P(&#34;pool&#34;) = 0.626 (rank 1)
+
+This confirms the hypothesis: the model stores &#34;washing&#34; and context makes &#34;machine&#34; overwhelmingly likely.
+
+**Finding 2: Compound directions are 93.7% reconstructable from constituent directions.**
+At the final layer, the compound direction at the word2 position can be reconstructed as a linear combination of the word1 and word2 directions with R² = 0.937 ± 0.020 (t=176.3, p=7.9e-25 vs. null). Only ~25% of the compound representation&#39;s norm is &#34;unique&#34; (unexplained residual). This means &#34;washing machine&#34; does NOT have a dedicated direction — it is ~94% a combination of &#34;washing&#34; and &#34;machine&#34; directions.
+
+**Finding 3: More compositional compounds have HIGHER reconstruction quality.**
+Spearman correlation between compositionality rating and R²: r=0.669, p=0.006. More compositional compounds (steel bridge: R²=0.965) are better reconstructed than idiomatic ones (hot dog: R²=0.888). This is exactly what the compositional hypothesis predicts — idiomatic compounds require more &#34;unique&#34; information beyond their constituents.
+
+**Finding 4: No token erasure in GPT-2 (contradicts Feucht et al. for named entities).**
+Word1 identity is perfectly recoverable from the word2 position at every layer (probe accuracy = 1.000). This means GPT-2 does not &#34;erase&#34; constituent token information to form compound representations. Unlike named entities, compound nouns maintain full constituent information throughout all layers.
+
+**Finding 5: Compound contexts are distinguishable from control contexts.**
+Despite the high R² for reconstruction, a linear probe can distinguish compound from non-compound contexts at the word2 position with 92.2% accuracy (peak at layer 8). This ~6% &#34;unique&#34; component (100% - 94% R²) carries enough information to differentiate &#34;washing machine&#34; from &#34;red machine.&#34;
+
+**Finding 6: Reconstruction quality follows a U-shaped pattern across layers.**
+R² starts high at layer 0 (0.940), dips to a minimum at layers 4-5 (~0.800), and recovers to 0.937 at layer 11. This suggests intermediate layers perform the most compound-specific processing, while early and late layers maintain more compositional representations.
+
+### Hypothesis Testing Results
+
+| Hypothesis | Result | Evidence |
+|-----------|--------|----------|
+| H1: Next-token prediction drives compound assembly | **Supported** | Wilcoxon p=2.1e-4; median boost=20.2x |
+| H2: Compounds lack unique residual stream directions | **Mostly supported** | R²=0.937; but ~6% unique component exists |
+| H3: Token erasure occurs for compounds | **Rejected** (for GPT-2) | Perfect word1 recovery at all layers |
+
+### Comparison to Baselines and Literature
+- **Feucht et al. (2024)** found token erasure in layers 1-9 for named entities in Llama-2-7B. We find NO erasure in GPT-2 for compound nouns — this could be a model size effect, an entity vs. compound noun difference, or both.
+- **Park et al. (2024)** showed 26/27 single-token concepts have linear directions. We show compound concepts are ~94% linearly reconstructable from constituents — the compound &#34;direction&#34; is largely the constituent directions.
+- **Ormerod et al. (2024)** found that compounds processed together have different representations than constituents processed separately. Our 92.2% probe accuracy confirms this, but shows the difference is relatively small (~6% of the total representation).
+
+### Validation on GPT-2-Medium (355M, 24 layers)
+Key findings replicate:
+
+| Compound | GPT-2 Boost | GPT-2-M Boost | GPT-2 R² | GPT-2-M R² |
+|----------|-------------|---------------|----------|------------|
+| washing machine | 4963x | 25303x | 0.917 | 0.899 |
+| swimming pool | 549x | 615x | 0.924 | 0.932 |
+| hot dog | 45x | 116x | 0.888 | 0.897 |
+| coffee table | 7x | 4x | 0.938 | 0.923 |
+
+The larger model shows similar or stronger next-token prediction boosting and similar R² values for linear reconstruction. Findings are robust to model scale.
+
+### Surprises and Insights
+
+1. **Guinea pig** (compositionality=2, idiomatic) has the HIGHEST boost ratio (7233x) and P=0.833 for &#34;pig&#34; after &#34;guinea.&#34; Despite being semantically opaque, the statistical association is the strongest. The model learns co-occurrence regardless of semantic compositionality.
+
+2. **Snowman** and **sunflower** have boost ratios &lt; 1 — the control word (&#34;tall man&#34;, &#34;red flower&#34;) actually predicts word2 BETTER than the compound word1. This is because &#34;snow&#34; and &#34;sun&#34; don&#39;t strongly predict their compound partners in GPT-2&#39;s training distribution.
+
+3. **Driving license** has a very high boost ratio (221x) but a low rank (118th prediction after &#34;driving&#34;). This means &#34;license&#34; is much more likely after &#34;driving&#34; than after &#34;new&#34;, but &#34;driving&#34; still predicts many other words more strongly (force, forces, seat, season).
+
+4. The **U-shaped R² curve** across layers was unexpected. It suggests that intermediate layers (4-5) perform the most transformation of compound representations, potentially encoding compound-specific semantics, before the final layers restore a more compositional representation for next-token prediction.
+
+### Error Analysis
+- **Blueberry** was excluded because &#34;berry&#34; tokenizes to multiple tokens in GPT-2, preventing clean analysis
+- **Guinea pig** was excluded from Experiment 2 (direction analysis) because &#34;guinea&#34; tokenizes to multiple tokens, but was kept in Experiment 1 (next-token prediction) where only word2 needs to be single-token
+- Compounds where both words are common function words (e.g., potential compound &#34;let down&#34;) were not included due to high baseline prediction probabilities
+
+### Limitations
+
+1. **Model scale**: GPT-2 (124M) is much smaller than modern LLMs. Larger models may develop more holistic compound representations. Validation on GPT-2-medium (355M) shows similar patterns, but testing on 7B+ models would strengthen conclusions.
+
+2. **Limited context diversity**: Only 8 sentence templates were used. More diverse contexts (from natural corpora like The Pile) would better capture the range of compound usage.
+
+3. **English-only**: All compounds are English. Cross-lingual analysis would reveal whether findings generalize.
+
+4. **Linear probing limitation**: Linear probes may miss nonlinear compound representations. MLP probes or DCI (Disentanglement, Completeness, Informativeness) could capture additional structure.
+
+5. **Absence of token erasure might be GPT-2-specific**: Feucht et al. found erasure in Llama-2-7B. Our GPT-2 results don&#39;t generalize to larger models without further validation.
+
+6. **The R² metric conflates direction and magnitude**: High R² could mean the compound direction is approximately in the span of constituent directions, even if the magnitude (and thus the information encoded in norms) differs.
+
+7. **Control phrase selection**: Our control phrases (e.g., &#34;red machine&#34; for &#34;washing machine&#34;) aim to preserve word2 while changing word1, but the specific control word choice affects boost ratios.
+
+## 6. Conclusions
+
+### Summary
+**&#34;Washing machine&#34; is not stored as a unique direction in GPT-2&#39;s residual stream.** Instead, the model primarily uses two complementary mechanisms: (1) **next-token prediction boosting** — seeing &#34;washing&#34; makes &#34;machine&#34; the most likely next token with P=0.827 — and (2) **contextual modulation** — the word2 representation in compound contexts is ~94% a linear combination of constituent word representations (R²=0.937), with only ~6% unique to the compound context. This 6% is sufficient to distinguish compound from non-compound contexts (92.2% probe accuracy) but does not constitute a dedicated &#34;washing machine&#34; direction.
+
+More idiomatic compounds (like &#34;hot dog&#34;) have slightly less reconstructable representations (R²=0.888 vs. 0.965 for &#34;steel bridge&#34;), suggesting the model allocates more unique representational capacity to concepts that cannot be derived from their parts.
+
+### Implications
+
+**For mechanistic interpretability**: Compound concepts challenge the simple &#34;one concept = one direction&#34; view. Most compound information is carried by constituent representations plus contextual modification, not dedicated directions. This means SAE features for compounds will likely be unreliable (consistent with the &#34;feature absorption&#34; problem documented by Chanin et al., 2024).
+
+**For concept editing**: Editing &#34;washing machine&#34; by modifying a single direction would likely fail — you&#39;d need to modify the contextual relationship between &#34;washing&#34; and &#34;machine&#34; representations, which is distributed across the network.
+
+**For the linear representation hypothesis**: The hypothesis holds approximately for compounds — compound representations are linear combinations of constituent representations — but the ~6% unique component and the U-shaped layer evolution suggest nonlinear dynamics in intermediate layers.
+
+### Confidence in Findings
+- **High confidence**: Next-token prediction boosting is the primary mechanism (large effect sizes, consistent across models)
+- **High confidence**: Compound directions are largely reconstructable from constituents (R²=0.937)
+- **Medium confidence**: No token erasure in GPT-2 (may not generalize to larger models)
+- **Medium confidence**: The ~6% unique component carries compound-specific information (depends on probe methodology)
+
+## 7. Next Steps
+
+### Immediate Follow-ups
+1. **Repeat on Llama-3-8B or Gemma-2-2B**: These models have pre-trained SAEs (Llama Scope, Gemma Scope) that would enable SAE feature analysis of compound concepts, and are large enough that token erasure effects might emerge.
+2. **Use natural corpus contexts**: Replace templates with sentences from The Pile or Wikipedia to reduce template bias and increase context diversity.
+3. **Expand compound dataset**: Include 100+ compounds spanning the full compositionality spectrum, using the NCS dataset&#39;s compositionality ratings.
+
+### Alternative Approaches
+- **SAE feature search**: Use pre-trained SAEs to search for features that activate specifically for compound nouns. Test for feature absorption (Chanin et al., 2024).
+- **Causal interventions**: Use activation patching to test whether modifying the word1 representation at specific layers disrupts compound understanding.
+- **Nonlinear probing**: Use MLP probes to capture nonlinear compound representations that linear probes miss.
+
+### Broader Extensions
+- **Cross-lingual study**: Test whether the compositional storage pattern holds across languages (e.g., German, which forms novel compounds productively)
+- **Scale analysis**: Track how compound representation changes from GPT-2 (124M) to GPT-3 (175B) to see if larger models develop more holistic representations
+- **Temporal analysis**: Test whether newly coined compounds (e.g., &#34;doomscrolling&#34;) are represented differently from established ones
+
+### Open Questions
+1. Where exactly does the 6% &#34;unique component&#34; come from? Is it in specific attention heads or MLP layers?
+2. Does the U-shaped R² pattern across layers correspond to specific computational stages?
+3. At what model scale does token erasure begin to appear for compound nouns?
+4. How do multiword expressions longer than 2 words (&#34;washing machine repair service&#34;) build up representations?
+
+## References
+
+1. Park, K. et al. (2024). The Linear Representation Hypothesis and the Geometry of Large Language Models. arXiv:2311.03658.
+2. Elhage, N. et al. (2022). Toy Models of Superposition. arXiv:2209.10652.
+3. Feucht, S. et al. (2024). Token Erasure as a Footprint of Implicit Vocabulary Items in LLMs. arXiv:2406.20086.
+4. Ormerod, M. et al. (2024). How Is a &#34;Kitchen Chair&#34; like a &#34;Farm Horse&#34;? Computational Linguistics, 50(1).
+5. Chanin, D. et al. (2024). A is for Absorption. arXiv:2409.14507.
+6. Geva, M. et al. (2022). Transformer Feed-Forward Layers Build Predictions by Promoting Concepts in the Vocabulary Space. arXiv:2203.14680.
+7. Aljaafari, N. et al. (2024). Interpreting token compositionality in LLMs. arXiv:2410.12924.
+8. Garcia, M. et al. (2021). Probing for idiomaticity in vector space models. EACL 2021.
+9. Cunningham, H. et al. (2023). Sparse Autoencoders Find Highly Interpretable Features. arXiv:2309.08600.
+10. Merullo, J. et al. (2023). Language Models Implement Simple Word2Vec-style Vector Arithmetic. arXiv:2305.16130.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                            RESEARCH PLAN
+════════════════════════════════════════════════════════════════════════════════
+
+# Research Plan: Where is &#34;Washing Machine&#34; Stored in LLMs?
+
+## Motivation &amp; Novelty Assessment
+
+### Why This Research Matters
+Large language models must represent millions of compound concepts (&#34;washing machine&#34;, &#34;hot dog&#34;, &#34;coffee table&#34;), but the residual stream has limited dimensionality (~4096 for 7B models). The superposition hypothesis (Elhage et al., 2022) suggests that sparse concepts share directions, but no study has directly investigated how multi-token compound nouns — as opposed to single-token concepts — are represented. Understanding this is crucial for mechanistic interpretability, concept editing, and understanding the limits of linear representation theory.
+
+### Gap in Existing Work
+- Park et al. (2024) tested 27 single-token concepts but never multi-token compounds
+- Feucht et al. (2024) showed token erasure for named entities but not common compound nouns
+- Ormerod et al. (2024) probed compound semantics in BERT (masked LM), not autoregressive models
+- No study has directly compared compound concept directions vs. constituent word directions in the residual stream
+- The core question — does &#34;washing machine&#34; have its own direction or is it derived from &#34;washing&#34; + context — remains unanswered
+
+### Our Novel Contribution
+We conduct three complementary experiments on GPT-2 (small, accessible, well-studied) to test whether compound concepts are stored holistically or compositionally:
+1. **Next-token probability analysis**: Measure how strongly &#34;washing&#34; predicts &#34;machine&#34; vs. alternative contexts
+2. **Residual stream direction analysis**: Extract and compare concept directions for compounds vs. constituents across layers
+3. **Compositional vs. holistic representation probing**: Test whether compound representations are linearly separable from constituent representations
+
+### Experiment Justification
+- **Experiment 1** (Next-Token Prediction): Directly tests the hypothesis that LLMs &#34;store washing and then machine becomes more likely.&#34; If P(machine|&#34;The washing&#34;) &gt;&gt; P(machine|baseline), this supports the compositional hypothesis.
+- **Experiment 2** (Residual Stream Directions): Tests whether compound concepts have unique directions in the residual stream. If compound directions are well-predicted by constituent directions, compounds are compositionally derived.
+- **Experiment 3** (Layer-wise Probing): Tests where in the network compound concepts emerge. If compound representations only appear at the last token position after several layers, this supports the token erasure / implicit vocabulary hypothesis.
+
+## Research Question
+In large language models, are compound concepts like &#34;washing machine&#34; represented as unique directions in the residual stream, or are they derived compositionally from constituent words plus context?
+
+## Background and Motivation
+There are far more referenceable concepts than available dimensions in an LLM&#39;s residual stream. For single-token concepts, superposition allows nearly-orthogonal storage. But multi-token compounds raise a unique challenge: the model must somehow represent &#34;washing machine&#34; as a unified concept despite processing it as two separate tokens. Three possibilities exist:
+1. **Holistic**: The model develops a unique direction for &#34;washing machine&#34; as a compound (assembled at the second token position)
+2. **Compositional**: &#34;Washing&#34; has a direction that activates contextual circuits, making &#34;machine&#34; more likely; no unified compound direction exists
+3. **Hybrid**: Some blend — early layers are compositional, but later layers develop a holistic compound representation
+
+## Hypothesis Decomposition
+
+### H1: Next-token prediction drives compound assembly
+- **Testable prediction**: P(machine | &#34;The washing&#34;) &gt;&gt; P(machine | &#34;The red&#34;) &gt;&gt; P(machine | baseline)
+- **Metric**: Next-token probability and rank of &#34;machine&#34; after &#34;washing&#34; vs. controls
+- **Null hypothesis**: Context does not significantly affect P(machine)
+
+### H2: Compound concepts lack unique residual stream directions
+- **Testable prediction**: The direction for &#34;washing machine&#34; (at the second token) is well-predicted by a linear combination of &#34;washing&#34; direction + &#34;machine&#34; direction
+- **Metric**: Cosine similarity between compound direction and span of constituent directions; reconstruction R²
+- **Null hypothesis**: Compound directions are linearly independent of constituent directions
+
+### H3: Compound representations emerge through token erasure
+- **Testable prediction**: Information about preceding tokens is erased/transformed at the last compound token in early-to-mid layers, more so for conventional compounds than compositional phrases
+- **Metric**: Linear probe accuracy for preceding token across layers; erasure score
+- **Null hypothesis**: No differential erasure between compounds and compositional controls
+
+## Proposed Methodology
+
+### Approach
+We use GPT-2 (124M parameters, 12 layers, d_model=768) as our primary model because:
+- Well-studied in interpretability (TransformerLens support)
+- Small enough to run multiple experiments on available GPUs
+- 12 layers provide sufficient depth for layer-wise analysis
+- Represents the architecture class (decoder-only transformer) used by modern LLMs
+
+We&#39;ll also validate key findings on GPT-2-medium (355M, 24 layers) to check for scale effects.
+
+### Experimental Steps
+
+#### Experiment 1: Next-Token Prediction Analysis
+1. Construct prompt templates: &#34;The [word1]&#34;, &#34;A [word1]&#34;, &#34;This [word1]&#34;
+2. For each compound in our dataset, measure P(word2 | context + word1)
+3. Compare against baselines:
+   - P(word2 | random context word)
+   - P(word2 | unconditional)
+   - P(word2 | semantically related but non-compound word)
+4. Analyze how compositionality rating correlates with P(word2)
+
+#### Experiment 2: Residual Stream Direction Analysis
+1. Collect hidden states from 100+ contexts containing each compound/constituent
+2. Compute mean activation vectors for:
+   - &#34;washing machine&#34; at the &#34;machine&#34; position (compound direction)
+   - &#34;washing&#34; in isolation (word1 direction)
+   - &#34;machine&#34; in isolation (word2 direction)
+3. Compute cosine similarity between compound and constituent directions
+4. Test linear reconstruction: can compound = α·word1 + β·word2 + bias?
+5. Compare reconstruction quality across compositionality levels
+
+#### Experiment 3: Layer-wise Probing / Token Erasure
+1. For each compound, extract hidden states at the last token position across all layers
+2. Train linear probes to predict:
+   - Identity of the preceding token (word1)
+   - Whether the context is compound vs. non-compound
+3. Track probe accuracy across layers
+4. Compare erasure patterns between:
+   - Conventional compounds (&#34;washing machine&#34;)
+   - Compositional phrases (&#34;red machine&#34;)
+   - Idiomatic compounds (&#34;hot dog&#34;)
+
+### Baselines
+- Random baseline: shuffled labels for probing
+- Compositional control: &#34;adj + noun&#34; phrases (e.g., &#34;red machine&#34;, &#34;blue car&#34;)
+- Separate word baseline: constituents in non-compound contexts
+- Prior layer baseline: compare early vs. late layer representations
+
+### Evaluation Metrics
+- Next-token probability P(word2 | context)
+- Next-token rank of word2
+- Cosine similarity between direction vectors
+- Linear reconstruction R² (how well compound = f(constituents))
+- Probe accuracy (%) across layers
+- Erasure score: change in probe accuracy from layer 0 to layer N
+- Pearson/Spearman correlation between compositionality rating and metrics
+
+### Statistical Analysis Plan
+- Paired t-tests or Wilcoxon signed-rank tests for comparing conditions
+- Spearman rank correlation for compositionality effects
+- Bootstrap confidence intervals (1000 resamples) for key metrics
+- Multiple comparison correction (Bonferroni) when testing multiple compounds
+- Significance level: α = 0.05
+
+## Expected Outcomes
+
+### If compounds are stored holistically:
+- Compound directions will be linearly independent of constituent directions
+- Token erasure will be strong for compounds (high erasure score)
+- P(word2|word1) will be high but compounds will have representations beyond just word prediction
+
+### If compounds are stored compositionally:
+- Compound directions will be well-reconstructed from constituent directions (high R²)
+- P(word2|word1) will be the primary mechanism
+- No significant token erasure beyond what&#39;s needed for prediction
+
+### If hybrid:
+- Early layers show compositional processing (high R² for reconstruction)
+- Late layers show unique compound directions (low R², high cosine distance from constituents)
+- Token erasure occurs in middle layers
+
+## Timeline and Milestones
+1. Environment setup &amp; data prep: 15 min
+2. Experiment 1 (next-token prediction): 30 min
+3. Experiment 2 (residual stream directions): 45 min
+4. Experiment 3 (layer-wise probing): 45 min
+5. Analysis &amp; visualization: 30 min
+6. Documentation: 30 min
+
+## Potential Challenges
+- GPT-2&#39;s tokenizer may split compound words unexpectedly → verify tokenization first
+- Context effects: need diverse contexts to avoid overfitting to specific prompts
+- Small model may not develop compound representations that larger models do → validate on GPT-2-medium
+- Some compounds in dataset are single tokens (e.g., &#34;butterfly&#34;) → filter to multi-token only
+
+## Success Criteria
+1. Clear evidence for/against each of the three hypotheses (H1, H2, H3)
+2. Quantitative metrics showing relationship between compositionality and representation
+3. Layer-wise analysis showing where compound representations emerge
+4. Statistical significance for key comparisons
+5. Reproducible results with documented methodology
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          LITERATURE REVIEW
+════════════════════════════════════════════════════════════════════════════════
+
+# Literature Review: Where is &#34;Washing Machine&#34; Stored in LLMs?
+
+## Research Area Overview
+
+This literature review surveys work relevant to understanding how compound concepts such as &#34;washing machine&#34; are represented in large language models (LLMs). The central hypothesis is that LLMs may not store compound concepts as unique directions in the residual stream; instead, they may store constituent parts (e.g., &#34;washing&#34;) and rely on context to increase the likelihood of the subsequent token (&#34;machine&#34;). This question sits at the intersection of three active research areas: (1) the linear representation hypothesis and concept geometry in neural networks, (2) mechanistic interpretability through sparse autoencoders, and (3) compositional semantics and multi-token concept processing in transformers.
+
+---
+
+## 1. Linear Representation Hypothesis and Concept Directions
+
+### Foundational Theory
+
+**Park et al. (2024)** — &#34;The Linear Representation Hypothesis and the Geometry of Large Language Models&#34; — provides the most rigorous formalization of what it means for a concept to be &#34;stored as a direction&#34; in an LLM. They distinguish three variants of the hypothesis:
+- **Subspace hypothesis**: Concepts correspond to directions in activation space (e.g., γ(&#34;queen&#34;) − γ(&#34;king&#34;) ≈ gender direction)
+- **Measurement hypothesis**: Linear probes can predict concept presence from activations
+- **Intervention hypothesis**: Adding concept vectors to activations steers model behavior
+
+They tested 27 concepts on LLaMA-2-7B using the BATS 3.0 dataset and found strong linear structure for 26/27 concepts. Critically, **the only concept that failed was the compositional relation &#34;thing→part&#34;**, suggesting that compositional/relational concepts may not follow the same linear representation pattern as simple attribute concepts. They also emphasize that the correct inner product for measuring concept geometry is the **causal inner product** (using the inverse covariance of unembeddings), not naive Euclidean distance. **Limitation**: Only single-token concepts were tested — multi-token compound concepts like &#34;washing machine&#34; remain unexplored.
+
+**Code**: github.com/KihoPark/linear_rep_geometry
+
+### Related Representation Work
+
+**Gurnee &amp; Tegmark (2023)** showed that LLMs develop linear representations of space and time, with specific directions encoding geographic coordinates and temporal information. **Merullo et al. (2023)** demonstrated that LLMs implement Word2Vec-style vector arithmetic for relational tasks, suggesting that the additive composition principle (king − man + woman = queen) may apply to some multi-token constructs. **Arora et al. (2016)** showed that polysemous word senses reside in linear superposition within word embeddings, recoverable via sparse coding — a precursor to modern SAE work.
+
+### Implications for Compound Concepts
+If &#34;washing machine&#34; has a unique direction, it should be recoverable via probing or steering. If it is compositionally derived, the direction should approximately equal some function of the &#34;washing&#34; and &#34;machine&#34; directions. The failure of &#34;thing→part&#34; relations in Park et al. suggests that relational/compositional concepts may require a different framework.
+
+---
+
+## 2. Superposition and Polysemanticity
+
+### Theoretical Foundation
+
+**Elhage et al. (2022)** — &#34;Toy Models of Superposition&#34; — established the theoretical framework for understanding how neural networks represent more features than they have dimensions. Key findings:
+- **Superposition**: Models store sparse features as nearly-orthogonal directions, tolerating interference between features
+- **Phase transitions**: Whether features use superposition depends on their sparsity and importance — sparse features (like &#34;washing machine&#34; occurrences) are MORE likely to be in superposition
+- **Geometric structure**: Features arrange into regular polytopes (triangles, pentagons, tetrahedra), following solutions to the Thomson problem
+- **Implication**: &#34;Washing machine&#34; as a concept is almost certainly NOT stored in a dedicated neuron but rather as a direction in superposition with other concepts
+
+**Scherlis et al. (2022)** — &#34;Polysemanticity and Capacity in Neural Networks&#34; — further analyzed why neurons become polysemantic, finding it emerges naturally from capacity constraints.
+
+### Practical Consequence
+Any experiment probing for &#34;washing machine&#34; must account for superposition. Looking at individual neurons will fail; instead, we need directional analysis (probing classifiers, SAE features, or concept vectors in the residual stream).
+
+---
+
+## 3. Sparse Autoencoders for Feature Discovery
+
+### Core SAE Work
+
+**Cunningham et al. (2023)** introduced using SAEs to decompose polysemantic activations into interpretable, monosemantic features. **Gao et al. (2024)** scaled SAEs significantly and established evaluation metrics. **Rajamanoharan et al. (2024)** introduced Gated SAEs for improved dictionary learning. **Bussmann et al. (2024)** proposed BatchTopK SAEs. **Lieberum et al. (2024)** released Gemma Scope, providing pre-trained SAEs across all layers of Gemma-2 models. **He et al. (2024)** released Llama Scope with 256 SAEs across Llama-3.1-8B.
+
+### Feature Absorption Problem
+
+**Chanin et al. (2024)** — &#34;A is for Absorption&#34; — identified a critical problem for using SAEs to study compound concepts:
+- **Feature absorption**: When features form hierarchies (e.g., &#34;washing machine&#34; → &#34;appliance&#34;), SAEs optimize for sparsity by absorbing parent features into child features, creating unreliable classifiers with arbitrary false negatives
+- **Universal**: Every SAE tested (across Gemma-2-2B, Qwen2, Llama 3.2, with hundreds of SAEs) exhibited absorption
+- **No fix**: No hyperparameter configuration solves it; it&#39;s inherent to the L1-sparsity objective
+- **Implication**: SAE features for compound concepts may be unreliable — a &#34;washing machine&#34; feature might fail to fire on arbitrary instances because more specific features absorb it
+
+**Code**: github.com/lasr-spelling/sae-spelling
+
+### Feature Hedging
+
+**Chanin et al. (2025)** — &#34;Feature Hedging&#34; — showed that if SAEs are narrower than the true number of features and features are correlated, SAEs merge components into composite representations. This could cause compound concepts to be merged with semantically related concepts.
+
+### Dark Matter in SAEs
+
+**Engels et al. (2024)** analyzed the &#34;dark matter&#34; of SAEs — unexplained variance that SAEs fail to capture. This is relevant because compound concept representations may partially reside in this unexplained variance.
+
+### Practical Guidance for Experiments
+- Use multiple SAE widths (16k, 65k, 128k) to check for feature splitting
+- Verify features with ablation studies, not just max-activating examples
+- Check for absorption: does a &#34;washing machine&#34; feature fire on all instances, or does it get absorbed into sub-features?
+- Consider using the footprints/token erasure approach instead of or alongside SAEs
+
+---
+
+## 4. Multi-Token Concept Processing
+
+### Token Erasure (Most Directly Relevant)
+
+**Feucht et al. (2024)** — &#34;Token Erasure as a Footprint of Implicit Vocabulary Items in LLMs&#34; — is the most directly relevant work. Key findings:
+
+- **Token erasure**: At the last token position of multi-token words/entities, information about preceding tokens is rapidly &#34;erased&#34; (transformed) in early layers (1–9)
+- **Implicit vocabulary**: LLMs develop internal representations for semantically meaningful units beyond their BPE token vocabulary — an &#34;implicit vocabulary&#34; of multi-token items
+- **Mechanism**: Information transforms from token-level encoding to lexical-level encoding at the last token position, due to the autoregressive constraint (the model can only represent &#34;Space Needle&#34; after seeing &#34;Needle&#34;)
+- **Models**: Tested on Llama-2-7B and Llama-3-8B; similar patterns despite very different tokenizations
+- **Measurement**: Linear probes trained on hidden states; accuracy for predicting preceding tokens drops from ~100% (layer 0) to ~20% (layer 9) at the last position of multi-token entities
+
+**Direct application to &#34;washing machine&#34;**: If &#34;washing machine&#34; is treated as a lexical unit by the model, we should observe token erasure at the &#34;machine&#34; token position — the hidden state for &#34;machine&#34; would &#34;forget&#34; the &#34;washing&#34; token information in early layers as it assembles the compound concept representation. Comparing this to compositional phrases like &#34;red machine&#34; (which should show less erasure) would test whether the model treats &#34;washing machine&#34; as a unified concept.
+
+**Code**: footprints.baulab.info, github.com/sfeucht/footprints
+
+### FFN Layer Concept Promotion
+
+**Geva et al. (2022)** — &#34;Transformer Feed-Forward Layers Build Predictions by Promoting Concepts in the Vocabulary Space&#34; — showed that:
+- FFN layers build predictions through sub-updates that &#34;promote&#34; specific tokens/concepts
+- Each value vector in the FFN encodes interpretable concepts
+- Predictions are built gradually across layers via promotion rather than elimination
+- **Relevance**: After processing &#34;washing&#34;, FFN layers may promote &#34;machine&#34; through value vectors that encode the &#34;appliance&#34; concept, gradually increasing P(&#34;machine&#34;) across layers
+
+### Compositional Probe Evidence
+
+**Ormerod et al. (2024)** — &#34;How Is a &#39;Kitchen Chair&#39; like a &#39;Farm Horse&#39;?&#34; — provides the most directly relevant probing study for compound noun semantics:
+- Used Representational Similarity Analysis (RSA) to compare transformer representations with human judgments of compound noun thematic relations
+- **Key experiment**: Compared representations when head+modifier are processed **together** (as compound) vs. **separately** (in different sentences)
+- **Results**: RoBERTa and DistilRoBERTa show significantly stronger compound semantic representations in the &#34;together&#34; condition — evidence of genuine compositional processing, not just co-occurrence memorization
+- **XLNet**: Relied more on distributional co-occurrence information from individual words
+- **Datasets**: 300 compounds from Gagné (2001), 60 compounds with fine-grained 18-dimensional relation vectors from Devereux &amp; Costello (2005)
+- **Limitation**: Used BERT-family masked language models, not autoregressive GPT-family models
+
+---
+
+## 5. Compositionality and Idiomaticity
+
+### Token Compositionality Analysis
+
+**Aljaafari et al. (2024)** — &#34;Interpreting token compositionality in LLMs&#34; — introduced Constituent-Aware Pooling (CAP) to test compositional processing:
+- **Finding**: No specific layer integrates tokens into unified semantic representations based on constituent parts
+- **Fragmented processing**: Information is distributed across layers with long dependency paths
+- **Larger models are worse**: Larger models exhibit greater information dispersion and fragmentation, suggesting scaling doesn&#39;t improve compositional integration
+- **Implication**: LLMs may process &#34;washing machine&#34; through fragmented, distributed mechanisms rather than composing a unified compound representation at any single layer
+
+### Idiomaticity Probing
+
+**Garcia et al. (2021)** — &#34;Probing for idiomaticity in vector space models&#34; — tested whether BERT captures idiomatic vs. compositional meanings of noun compounds:
+- **Finding**: Contextualised models fail to accurately capture idiomaticity
+- Models prioritize lexical overlap over semantic understanding
+- Context plays a surprisingly limited role in disambiguating compositional vs. idiomatic readings
+- Developed the Noun Compound Senses (NCS) dataset with 280 English and 180 Portuguese compounds
+
+### Transformer Compositional Processing
+
+**Dankers et al. (2022)** — &#34;Can Transformer be Too Compositional?&#34; — analyzed idiom processing in NMT:
+- Transformers tend to over-generate compositional translations of idioms
+- Models struggle with non-compositional multi-word expressions
+- Suggests a bias toward compositional processing even when inappropriate
+
+**Buijtelaar et al. (2023)** — &#34;A Psycholinguistic Analysis of BERT&#39;s Representations of Compounds&#34; — found that BERT&#39;s representations of compounds align with human semantic intuitions about compound meaning, but the alignment varies by layer.
+
+---
+
+## 6. Common Methodologies and Baselines
+
+### Probing Methods
+- **Linear probes**: Train linear classifiers on hidden states to predict concept properties (Park et al., Feucht et al.)
+- **RSA (Representational Similarity Analysis)**: Compare model RDMs with human judgment RDMs (Ormerod et al.)
+- **Causal interventions**: Patch/ablate hidden states to test causal role of representations (Turner et al., Hernandez et al.)
+- **SAE feature analysis**: Decompose activations using SAEs and inspect features (Cunningham et al., Chanin et al.)
+
+### Standard Baselines
+- **Random baseline**: Permuted/shuffled labels for probing
+- **Separate processing baseline**: Process constituent words in separate contexts (Ormerod et al.&#39;s &#34;Separate&#34; condition)
+- **Compositional control**: Compare compound nouns to clearly compositional phrases (e.g., &#34;washing machine&#34; vs. &#34;red machine&#34;)
+- **Different tokenizations**: Compare models with different BPE vocabularies to control for tokenization effects
+
+### Evaluation Metrics
+- **Probe accuracy**: How well can a linear probe recover concept information
+- **Erasure score (ψ)**: Quantifies token-level information loss (Feucht et al.)
+- **RSA correlation**: Second-order correlation between model and human RDMs
+- **Steering effect size**: Change in model behavior when adding concept vectors
+- **SAE feature F1**: How reliably an SAE feature tracks a target concept
+
+---
+
+## 7. Datasets in the Literature
+
+| Dataset | Used In | Type | Size | Relevance |
+|---------|---------|------|------|-----------|
+| Gagné (2001) compounds | Ormerod et al. | 300 compounds, 16 relations | 300 | High |
+| Devereux &amp; Costello (2005) | Ormerod et al. | 60 compounds, 18-dim relation vectors | 60 | High |
+| NCS (Garcia et al.) | Garcia et al. | Compounds with compositionality ratings | 280 EN, 180 PT | High |
+| COUNTERFACT | Feucht et al. | Factual prompts with entities | 12K+ | Medium |
+| MAGPIE | Idiom research | Idiom instances with labels | 56K | Medium |
+| BATS 3.0 | Park et al. | Analogy/relation pairs | ~40 relations | Medium |
+| The Pile | Feucht et al. | General text (probe training) | 800GB | Medium |
+
+---
+
+## 8. Gaps and Opportunities
+
+### Key Gap: No Study Directly Tests Compound Noun Directions in Residual Stream
+- Park et al. tested single-token concepts but not multi-token compounds
+- Ormerod et al. used masked LMs (BERT), not autoregressive models
+- Feucht et al. focused on named entities, not common compound nouns
+- No study has used SAEs to find features specifically for compound nouns like &#34;washing machine&#34;
+
+### Opportunity 1: Token Erasure for Compound Nouns
+Adapt Feucht et al.&#39;s methodology to test whether &#34;washing machine&#34; shows erasure patterns (suggesting unified representation) or maintains token-level information (suggesting compositional processing). Compare to compositional controls.
+
+### Opportunity 2: SAE Feature Analysis of Compound Concepts
+Use pre-trained SAEs (Gemma Scope, Llama Scope) to search for features that specifically activate for &#34;washing machine&#34; as a compound, vs. features for &#34;washing&#34; and &#34;machine&#34; separately. Test for absorption effects.
+
+### Opportunity 3: Directional Probing with Causal Inner Product
+Apply Park et al.&#39;s framework to multi-token compounds: estimate the causal inner product, find concept directions for &#34;washing machine&#34; vs. constituent words, and test whether the compound direction is linearly independent of constituent directions.
+
+### Opportunity 4: Compositional vs. Holistic Representation Spectrum
+Build a controlled dataset of compound nouns varying in compositionality (from &#34;coffee table&#34; to &#34;hot dog&#34;) and measure representation properties across this spectrum — erasure scores, SAE feature patterns, probe accuracy, and steering effects.
+
+---
+
+## 9. Recommendations for Experiments
+
+### Primary Methodology: Token Erasure Analysis
+1. Use Feucht et al.&#39;s linear probes on Llama-2-7B or Llama-3-8B
+2. Measure erasure scores for compound nouns varying in compositionality
+3. Compare: &#34;washing machine&#34; (compound) vs. &#34;red machine&#34; (compositional) vs. &#34;hot dog&#34; (idiomatic)
+
+### Secondary Methodology: SAE Feature Search
+1. Use pre-trained SAEs (Gemma Scope or Llama Scope)
+2. Search for features that activate on compound nouns
+3. Test for feature absorption: does the compound feature reliably fire?
+4. Compare feature patterns across compositionality spectrum
+
+### Tertiary Methodology: Concept Direction Analysis
+1. Collect contexts where &#34;washing machine&#34; appears vs. related contexts
+2. Estimate concept directions using mean-difference or probing
+3. Test: is the &#34;washing machine&#34; direction independent of &#34;washing&#34; and &#34;machine&#34; directions?
+4. Measure causal effects of steering with compound vs. constituent vectors
+
+### Recommended Models
+- **Llama-2-7B** or **Llama-3-8B**: Best supported by existing tools and pre-trained probes
+- **Gemma-2-2B**: Best SAE coverage via Gemma Scope
+- **GPT-2-small**: Good for initial experiments due to size and tooling support
+
+### Recommended Metrics
+1. Erasure score (ψ) — quantifies lexicality
+2. Probe accuracy across layers — maps representation formation
+3. SAE feature reliability (F1) — tests feature absorption
+4. Steering effect size — causal validation
+5. Cosine similarity between compound and constituent directions
+
+---
+
+## References
+
+1. Aljaafari, N. et al. (2024). Interpreting token compositionality in LLMs. arXiv:2410.12924.
+2. Arora, S. et al. (2016). Linear Algebraic Structure of Word Senses. arXiv:1601.03764.
+3. Buijtelaar, L. et al. (2023). A Psycholinguistic Analysis of BERT&#39;s Representations of Compounds.
+4. Bussmann, B. et al. (2024). BatchTopK Sparse Autoencoders. arXiv:2409.06981.
+5. Chanin, D. et al. (2024). A is for Absorption. arXiv:2409.14507.
+6. Chanin, D. et al. (2025). Feature Hedging. arXiv:2503.01370.
+7. Cunningham, H. et al. (2023). Sparse Autoencoders Find Highly Interpretable Features. arXiv:2309.08600.
+8. Dankers, V. et al. (2022). Can Transformer be Too Compositional? arXiv:2205.15301.
+9. Elhage, N. et al. (2022). Toy Models of Superposition. arXiv:2209.10652.
+10. Engels, J. et al. (2024). Decomposing The Dark Matter of SAEs. arXiv:2410.14670.
+11. Feucht, S. et al. (2024). Token Erasure as a Footprint of Implicit Vocabulary Items. arXiv:2406.20086.
+12. Gao, L. et al. (2024). Scaling and evaluating sparse autoencoders. arXiv:2406.04093.
+13. Garcia, M. et al. (2021). Probing for idiomaticity in vector space models. EACL 2021.
+14. Geva, M. et al. (2022). Transformer Feed-Forward Layers Build Predictions. arXiv:2203.14680.
+15. Gurnee, W. &amp; Tegmark, M. (2023). Language Models Represent Space and Time. arXiv:2310.02207.
+16. He, Z. et al. (2024). Llama Scope. arXiv:2410.20526.
+17. Hernandez, E. et al. (2023). Linearity of Relation Decoding. arXiv:2308.09124.
+18. Lieberum, T. et al. (2024). Gemma Scope. arXiv:2408.05147.
+19. Merullo, J. et al. (2023). Language Models Implement Simple Word2Vec-style Vector Arithmetic. arXiv:2305.16130.
+20. Ormerod, M. et al. (2024). How Is a &#34;Kitchen Chair&#34; like a &#34;Farm Horse&#34;? Computational Linguistics, 50(1).
+21. Park, K. et al. (2024). The Linear Representation Hypothesis. arXiv:2311.03658.
+22. Rajamanoharan, S. et al. (2024). Improving Dictionary Learning with Gated SAEs. arXiv:2404.16014.
+23. Scherlis, A. et al. (2022). Polysemanticity and Capacity in Neural Networks. arXiv:2210.01892.
+24. Turner, A. et al. (2023). Steering Language Models With Activation Engineering. arXiv:2308.10248.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          PAPER REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+Generate a complete academic paper with the following structure:
+
+1. TITLE
+   - Clear, specific, informative
+   - Should convey main finding or contribution
+
+2. ABSTRACT (150-250 words)
+   - Problem statement
+   - Approach
+   - Key results
+   - Significance
+
+3. INTRODUCTION
+   - Research problem and motivation
+   - Gap in existing work
+   - Our contribution (be specific)
+   - Paper organization
+
+4. RELATED WORK
+   - Organized by theme/approach
+   - Position our work relative to prior work
+   - Cite papers from literature review
+
+5. METHODOLOGY
+   - Clear description of approach
+   - Experimental setup
+   - Datasets used
+   - Evaluation metrics
+   - Baselines
+
+6. RESULTS
+   - Present results with tables and figures
+   - Statistical analysis
+   - Comparison to baselines
+   - Ablation studies (if applicable)
+
+7. DISCUSSION
+   - Interpretation of results
+   - Limitations
+   - Broader implications
+
+8. CONCLUSION
+   - Summary of contributions
+   - Key findings
+   - Future work
+
+9. REFERENCES
+   - BibTeX format
+   - All cited papers
+
+════════════════════════════════════════════════════════════════════════════════
+                          OUTPUT FORMAT
+════════════════════════════════════════════════════════════════════════════════
+
+Create a MODULAR LaTeX project with the following directory structure:
+
+paper_draft/
+├── main.tex              # Main file that imports all sections
+├── references.bib        # BibTeX references
+├── sections/
+│   ├── abstract.tex      # Abstract content
+│   ├── introduction.tex  # Introduction section
+│   ├── related_work.tex  # Related work section
+│   ├── methodology.tex   # Methodology section
+│   ├── results.tex       # Results section
+│   ├── discussion.tex    # Discussion section
+│   └── conclusion.tex    # Conclusion section
+├── figures/              # Directory for any generated figures
+├── tables/               # Directory for complex standalone tables
+└── appendix/             # Directory for appendix sections (if needed)
+
+INSTRUCTIONS:
+1. First, create the directory structure above (mkdir -p paper_draft/sections paper_draft/figures paper_draft/tables paper_draft/appendix)
+2. Write main.tex using the EXACT preamble for NEURIPS:
+
+   \documentclass{article}
+   \usepackage[final]{neurips_2025}  % NEURIPS style (neurips_2025.sty is in paper_draft/)
+   \usepackage[hidelinks]{hyperref}  % REQUIRED: clickable links
+   \usepackage{booktabs}  % REQUIRED: professional tables
+   \usepackage{graphicx}
+   \usepackage{amsmath,amssymb}
+
+   % Import command files
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+   % Use this bibliography style:
+   \bibliographystyle{plainnat}
+
+   - Use \input{sections/...} to include each section
+   - Use \bibliography{references} for references
+3. Write each section file with COMPLETE content (no placeholders)
+4. Each section file should include its \section{} command
+5. Write references.bib with all citations in BibTeX format
+6. After writing all files, compile the paper:
+   cd paper_draft && pdflatex -interaction=nonstopmode main.tex && bibtex main && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex
+
+This modular structure allows humans to easily:
+- Edit individual sections without navigating a large file
+- Track changes per section
+- Reuse sections across different paper versions
+
+════════════════════════════════════════════════════════════════════════════════
+                          QUALITY REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+- Academic tone throughout
+- All claims must be supported by data from the experiment report
+- Proper citations using \cite{} commands
+- Clear figures and tables with proper captions
+- NO placeholder text - every section must have real content
+- The paper MUST compile without errors
+- If compilation fails, debug and fix the LaTeX errors
+
+════════════════════════════════════════════════════════════════════════════════
+                          LAB WRITING STYLE
+════════════════════════════════════════════════════════════════════════════════
+
+Follow these lab-specific conventions to match our paper style:
+
+1. LANGUAGE STYLE:
+   - Use active voice: "We propose", "We examine", "We focus on"
+   - Be direct and confident: "Our main question is...", "We hypothesize that..."
+   - State things clearly and simply - prefer plain language over jargon
+   - Use bold questions as paragraph organizers: {\bf what is X?}
+   - Include specific quantitative claims: "8.97% over baseline"
+   - Avoid fancy wording: "utilize" → "use", "facilitate" → "help"
+
+2. INTRODUCTION STRUCTURE:
+   - Engaging hook (get to the point quickly)
+   - Problem importance
+   - Gap identification
+   - Your approach with method figure reference
+   - Quantitative preview of results
+   - Contribution bullets (3-4 items, action verbs)
+
+3. CONTRIBUTION LISTS:
+   \begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+       \item We propose...
+       \item We conduct...
+       \item We complement...
+   \end{itemize}
+
+4. MODULAR COMMANDS STRUCTURE:
+   Create paper_draft/commands/ directory with:
+   - math.tex: Math notation macros (copy from templates/paper_writing/commands/)
+   - general.tex: Formatting macros (copy from templates/paper_writing/commands/)
+   - macros.tex: Project-specific term definitions
+
+   In main.tex, include:
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+5. REFERENCE CONVENTIONS:
+   Use reference macros from math.tex:
+   - \figref{fig:name} for "figure 1" (lowercase, in-sentence)
+   - \Figref{fig:name} for "Figure 1" (capitalized, start of sentence)
+   - \secref{sec:name} for "section 2"
+
+6. TEXT FORMATTING:
+   - Use \para{Header text} for bold paragraph headers
+   - Define method/dataset names with \textsc and \xspace:
+     \newcommand{\methodname}{\textsc{MethodName}\xspace}
+
+7. TABLE FORMATTING:
+   - Use booktabs package (no vertical lines)
+   - Use \resizebox{\textwidth}{!}{...} for wide tables
+   - Use @{} to remove padding at table edges
+   - Use \cmidrule(lr){x-y} for sub-headers
+   - Use \textsc{} for dataset/method names in headers
+   - Bold best results with {\bf ...}
+
+8. FIGURE FORMATTING:
+   - Use 0.32\textwidth for 3-column subfigures
+   - Use 0.95\linewidth for full-width figures
+   - Use \input{figures/legend} for shared legends
+   - Write self-contained captions explaining key observations
+
+9. RESULTS PRESENTATION:
+   - Define \increase and \decrease for colored arrows (green up, red down)
+   - Bold best results in tables
+   - Report confidence intervals when available
+
+10. ALGORITHM STYLING:
+    - Use algpseudocode with [noend]
+    - Use \triangleright for comments
+
+11. HYPERLINKS (REQUIRED):
+    - Always use \usepackage[hidelinks]{hyperref} or with colored links
+    - All citations, section refs, figure refs, table refs must be clickable
+    - This is essential for reader navigation
+
+════════════════════════════════════════════════════════════════════════════════
+                          WORKFLOW: REVIEW AND REFLECT
+════════════════════════════════════════════════════════════════════════════════
+
+Before calling finish, you MUST complete these review steps:
+
+1. REVIEW RESOURCES (at the start):
+   - Read templates/skills/paper-writer/SKILL.md for detailed guidance
+   - Study templates/paper_writing/lab_style_guide.md for style conventions
+   - Browse paper_examples/ for formatting and language patterns
+
+2. SELF-REFLECTION (before finishing):
+   After writing all sections, review your work against these criteria:
+
+   LANGUAGE CHECK:
+   - [ ] Is the writing clear and jargon-free?
+   - [ ] Are claims specific with quantitative support?
+   - [ ] Is active voice used throughout?
+
+   FORMATTING CHECK:
+   - [ ] Does main.tex include \input{commands/math}, \input{commands/general}, \input{commands/macros}?
+   - [ ] Is hyperref package included for clickable references?
+   - [ ] Do tables use booktabs (no vertical lines)?
+   - [ ] Are best results bolded in tables?
+   - [ ] Are figures/tables properly captioned?
+
+   STRUCTURE CHECK:
+   - [ ] Does introduction follow: hook → importance → gap → approach → preview → contributions?
+   - [ ] Are contribution bullets specific with action verbs?
+   - [ ] Does the paper compile without errors?
+
+3. FIX ISSUES:
+   - Address any issues found in the self-reflection
+   - Re-compile and verify the PDF looks correct
+
+Only after completing this review should you consider the paper finished.

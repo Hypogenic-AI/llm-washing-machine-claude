@@ -1,0 +1,35 @@
+{"compound": "coffee table", "word1": "coffee", "word2": "table", "compositionality_rating": 5, "notes": "Fully compositional - a table for placing coffee"}
+{"compound": "brick house", "word1": "brick", "word2": "house", "compositionality_rating": 5, "notes": "Fully compositional - a house made of bricks"}
+{"compound": "mountain cabin", "word1": "mountain", "word2": "cabin", "compositionality_rating": 5, "notes": "Fully compositional - a cabin in the mountains"}
+{"compound": "garden hose", "word1": "garden", "word2": "hose", "compositionality_rating": 5, "notes": "Fully compositional - a hose for the garden"}
+{"compound": "door handle", "word1": "door", "word2": "handle", "compositionality_rating": 5, "notes": "Fully compositional - a handle on a door"}
+{"compound": "water bottle", "word1": "water", "word2": "bottle", "compositionality_rating": 5, "notes": "Fully compositional - a bottle for water"}
+{"compound": "steel bridge", "word1": "steel", "word2": "bridge", "compositionality_rating": 5, "notes": "Fully compositional - a bridge made of steel"}
+{"compound": "chocolate cake", "word1": "chocolate", "word2": "cake", "compositionality_rating": 5, "notes": "Fully compositional - a cake with chocolate"}
+{"compound": "washing machine", "word1": "washing", "word2": "machine", "compositionality_rating": 4, "notes": "Partially compositional - a machine for washing, but 'washing' is typically clothing-specific"}
+{"compound": "swimming pool", "word1": "swimming", "word2": "pool", "compositionality_rating": 4, "notes": "Partially compositional - a pool for swimming, but the compound has a specific conventional meaning"}
+{"compound": "parking lot", "word1": "parking", "word2": "lot", "compositionality_rating": 4, "notes": "Partially compositional - a lot for parking, but 'lot' has a specialized meaning here"}
+{"compound": "driving license", "word1": "driving", "word2": "license", "compositionality_rating": 4, "notes": "Partially compositional - a license for driving, institutionalized term"}
+{"compound": "living room", "word1": "living", "word2": "room", "compositionality_rating": 3, "notes": "Partially compositional - a room for living, but 'living' has become abstract"}
+{"compound": "shooting star", "word1": "shooting", "word2": "star", "compositionality_rating": 2, "notes": "Weakly compositional - not actually a star that shoots, but a meteor"}
+{"compound": "guinea pig", "word1": "guinea", "word2": "pig", "compositionality_rating": 2, "notes": "Weakly compositional - neither from Guinea nor a pig, but resembles a pig"}
+{"compound": "strawberry", "word1": "straw", "word2": "berry", "compositionality_rating": 2, "notes": "Weakly compositional - etymology involves straw but modern meaning opaque"}
+{"compound": "blackboard", "word1": "black", "word2": "board", "compositionality_rating": 3, "notes": "Partially compositional - originally black, but now refers to any writing board"}
+{"compound": "greenhouse", "word1": "green", "word2": "house", "compositionality_rating": 3, "notes": "Partially compositional - not necessarily green, but for growing green plants"}
+{"compound": "hotdog", "word1": "hot", "word2": "dog", "compositionality_rating": 1, "notes": "Non-compositional (idiomatic) - not a hot dog animal, sausage in a bun"}
+{"compound": "butterfly", "word1": "butter", "word2": "fly", "compositionality_rating": 1, "notes": "Non-compositional (idiomatic) - no relation to butter or flying"}
+{"compound": "deadline", "word1": "dead", "word2": "line", "compositionality_rating": 1, "notes": "Non-compositional (idiomatic) - metaphorical time limit, historical origin obscured"}
+{"compound": "hot dog", "word1": "hot", "word2": "dog", "compositionality_rating": 1, "notes": "Non-compositional (idiomatic) - sausage in a bun, not a warm canine"}
+{"compound": "redhead", "word1": "red", "word2": "head", "compositionality_rating": 3, "notes": "Partially compositional - head isn't red, but hair is"}
+{"compound": "blueberry", "word1": "blue", "word2": "berry", "compositionality_rating": 4, "notes": "Partially compositional - berries that are blue, but specific variety"}
+{"compound": "firefly", "word1": "fire", "word2": "fly", "compositionality_rating": 3, "notes": "Partially compositional - fly that produces light like fire"}
+{"compound": "snowman", "word1": "snow", "word2": "man", "compositionality_rating": 4, "notes": "Partially compositional - man-shaped figure made of snow"}
+{"compound": "sunflower", "word1": "sun", "word2": "flower", "compositionality_rating": 4, "notes": "Partially compositional - flower that follows the sun"}
+{"compound": "bookworm", "word1": "book", "word2": "worm", "compositionality_rating": 1, "notes": "Non-compositional (idiomatic) - person who reads a lot, not an actual worm"}
+{"compound": "ladybug", "word1": "lady", "word2": "bug", "compositionality_rating": 1, "notes": "Non-compositional (idiomatic) - type of beetle, no relation to ladies"}
+{"compound": "eggplant", "word1": "egg", "word2": "plant", "compositionality_rating": 2, "notes": "Weakly compositional - plant whose fruit resembles eggs in some varieties"}
+{"compound": "popcorn", "word1": "pop", "word2": "corn", "compositionality_rating": 4, "notes": "Partially compositional - corn that pops when heated"}
+{"compound": "keyboard", "word1": "key", "word2": "board", "compositionality_rating": 4, "notes": "Partially compositional - board with keys, but 'key' has specialized meaning"}
+{"compound": "football", "word1": "foot", "word2": "ball", "compositionality_rating": 4, "notes": "Partially compositional - ball kicked with foot, but refers to specific game"}
+{"compound": "breakfast", "word1": "break", "word2": "fast", "compositionality_rating": 2, "notes": "Weakly compositional - etymologically 'breaking fast' but opaque to most speakers"}
+{"compound": "rainbow", "word1": "rain", "word2": "bow", "compositionality_rating": 3, "notes": "Partially compositional - bow-shaped arc seen in rain, but 'bow' meaning is archaic"}

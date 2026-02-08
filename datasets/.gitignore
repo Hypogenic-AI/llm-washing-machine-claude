@@ -1,0 +1,10 @@
+# Exclude all data files (can be large)
+*
+
+# But include documentation and small samples
+!.gitignore
+!README.md
+!**/README.md
+!compound_nouns_test.jsonl
+!dataset_search_results.md
+!DOWNLOAD_SUMMARY.md

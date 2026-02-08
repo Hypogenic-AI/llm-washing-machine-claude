@@ -1,0 +1,66 @@
+[
+  {
+    "compound": "washing machine",
+    "compositionality": 4,
+    "p_word2_compound": 0.763067364692688,
+    "p_word2_control": 3.0157372748362832e-05,
+    "boost_ratio": 25302.846208117153,
+    "r_squared_final": 0.8993669748306274
+  },
+  {
+    "compound": "swimming pool",
+    "compositionality": 4,
+    "p_word2_compound": 0.6733113676309586,
+    "p_word2_control": 0.001094271705369465,
+    "boost_ratio": 615.3054715086731,
+    "r_squared_final": 0.932275116443634
+  },
+  {
+    "compound": "hot dog",
+    "compositionality": 1,
+    "p_word2_compound": 0.1819758526980877,
+    "p_word2_control": 0.0015638368349755183,
+    "boost_ratio": 116.36498682481572,
+    "r_squared_final": 0.8973886966705322
+  },
+  {
+    "compound": "guinea pig",
+    "compositionality": 2,
+    "p_word2_compound": 0.8594241440296173,
+    "p_word2_control": 0.00012226033095430466,
+    "boost_ratio": 7029.46031080867,
+    "r_squared_final": null
+  },
+  {
+    "compound": "coffee table",
+    "compositionality": 5,
+    "p_word2_compound": 0.03765681269578636,
+    "p_word2_control": 0.010375078942161053,
+    "boost_ratio": 3.6295446912467266,
+    "r_squared_final": 0.9228150248527527
+  },
+  {
+    "compound": "parking lot",
+    "compositionality": 4,
+    "p_word2_compound": 0.3272962383925915,
+    "p_word2_control": 0.01772437011823058,
+    "boost_ratio": 18.465888277516143,
+    "r_squared_final": 0.9100561738014221
+  },
+  {
+    "compound": "living room",
+    "compositionality": 3,
+    "p_word2_compound": 0.205628776922822,
+    "p_word2_control": 0.002740528405411169,
+    "boost_ratio": 75.03252895201098,
+    "r_squared_final": 0.9262291789054871
+  },
+  {
+    "compound": "mountain cabin",
+    "compositionality": 5,
+    "p_word2_compound": 0.001110015142330667,
+    "p_word2_control": 0.0008867530195857398,
+    "boost_ratio": 1.2517748660717587,
+    "r_squared_final": 0.8969312310218811
+  }
+]
