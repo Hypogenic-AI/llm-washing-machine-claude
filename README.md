@@ -16,41 +16,62 @@ An empirical investigation into how compound concepts are represented in large l
 ```bash
 uv venv
 source .venv/bin/activate
-uv add torch transformer-lens matplotlib seaborn scipy numpy
+uv sync   # installs all dependencies including nltk
 uv pip install huggingface_hub safetensors
 ```
 
-### Running Experiments
+### Running the Original Experiments
 ```bash
-# All 3 experiments (~3 min on GPU)
+# All 3 experiments on compound representations (~3 min on GPU)
 python src/experiments.py
+```
+
+### Running PMI-based Prediction Experiments (Tasks 1 & 2)
+```bash
+# Step 1: Build datasets (OpenWebText + optional PubMed; CPU; often 30–120+ min)
+python src/pmi_dataset_builder.py
+
+# Step 2: Run prediction experiments (~10-20 min on GPU)
+python src/pmi_prediction_exp.py
+
+# Step 3: Generate plots and statistical analysis
+python src/analyze_pmi_results.py
 ```
 
 ### Hardware Requirements
 - GPU recommended (any CUDA GPU with 8GB+ VRAM)
-- CPU-only: works but slower (~15 min)
+- CPU-only: works but slower (~15–30 min for experiment script)
 - Disk: ~500MB for model + SAE weights
 
 ## File Structure
 ```
 .
-├── REPORT.md                    # Full research report with results
-├── README.md                    # This file
-├── planning.md                  # Research plan and methodology
-├── literature_review.md         # Literature review
-├── resources.md                 # Resource catalog
+├── REPORT.md                      # Full research report with results
+├── README.md                      # This file
+├── planning.md                    # Original research plan
+├── literature_review.md           # Literature review
+├── resources.md                   # Resource catalog
 ├── src/
-│   ├── experiments.py           # Main experiments (3 experiments)
-│   └── manual_sae.py            # Manual SAE implementation
+│   ├── experiments.py             # Original 3 experiments (compound representations)
+│   ├── manual_sae.py              # Manual SAE implementation
+│   ├── pmi_dataset_builder.py     # NEW: Build high-PMI bigram datasets (Tasks 1 & 2)
+│   ├── pmi_prediction_exp.py      # NEW: Prediction experiments (Tasks 1 & 2 + biomedical)
+│   └── analyze_pmi_results.py     # NEW: Analysis and visualization
 ├── results/
-│   ├── summary.json             # Summary statistics
-│   ├── exp1_residual_stream.json
+│   ├── exp1_residual_stream.json  # Original experiment results
 │   ├── exp2_sae_features.json
 │   ├── exp3_next_token.json
-│   └── plots/                   # All visualizations
-├── papers/                      # Downloaded research papers
-├── datasets/                    # Compound noun datasets
-└── code/                        # Cloned reference repositories
+│   ├── pmi_prediction_results.json   # NEW: Task 1 results
+│   ├── minority_class_results.json   # NEW: Task 2 results
+│   ├── cross_domain_results.json     # NEW: Biomedical analysis results
+│   └── plots/                        # All visualizations
+├── datasets/
+│   ├── compound_concepts/         # Original compound noun dataset
+│   ├── high_pmi_bigrams.json      # NEW: High-PMI bigrams (PMI from OpenWebText)
+│   ├── minority_class_pairs.json  # NEW: Majority vs minority completion pairs
+│   └── cross_domain_pairs.json    # NEW: General vs biomedical completion pairs
+├── papers/                        # Downloaded research papers
+└── code/                          # Cloned reference repositories
 ```
 
 See [REPORT.md](REPORT.md) for the full research report with all experimental results, statistical analysis, and discussion.

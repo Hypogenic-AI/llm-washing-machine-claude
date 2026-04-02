@@ -1,0 +1,255 @@
+{
+  "metadata": {
+    "description": "Raw cross-domain pairs for biomedical vs general completion analysis. Each entry has an ambiguous English prefix word with two sets of candidate second words: general-domain completions and biomedical/biological completions. Processed by pmi_dataset_builder.py, which verifies single-token status and looks up corpus frequencies.",
+    "annotation": "Manual curation based on linguistic and biomedical domain knowledge",
+    "rationale": "GPT-2 is trained on web text dominated by general English. Biomedical completions are valid but underrepresented. This allows measuring domain bias beyond what corpus frequency alone predicts.",
+    "n_groups": 35
+  },
+  "pairs": [
+    {
+      "prefix": "cell",
+      "ambiguity": "high",
+      "note": "everyday word with rich biological meanings",
+      "general": ["phone", "tower", "block", "wall"],
+      "biomedical": ["membrane", "division", "culture", "cycle", "death", "growth", "line"]
+    },
+    {
+      "prefix": "drug",
+      "ambiguity": "high",
+      "note": "common word vs pharmacological sense",
+      "general": ["dealer", "abuse", "store", "test", "user"],
+      "biomedical": ["resistance", "target", "therapy", "interaction", "metabolism", "delivery"]
+    },
+    {
+      "prefix": "protein",
+      "ambiguity": "medium",
+      "note": "nutritional vs molecular biology sense",
+      "general": ["powder", "shake", "bar", "supplement"],
+      "biomedical": ["folding", "structure", "binding", "synthesis", "expression", "complex"]
+    },
+    {
+      "prefix": "gene",
+      "ambiguity": "medium",
+      "note": "personal name vs genetic biology term",
+      "general": ["pool"],
+      "biomedical": ["expression", "mutation", "regulation", "editing", "sequence", "transfer", "therapy"]
+    },
+    {
+      "prefix": "tissue",
+      "ambiguity": "medium",
+      "note": "paper tissue vs biological tissue",
+      "general": ["paper", "box"],
+      "biomedical": ["biopsy", "engineering", "sample", "damage", "repair", "transplant", "bank"]
+    },
+    {
+      "prefix": "strain",
+      "ambiguity": "medium",
+      "note": "physical strain vs microbial strain",
+      "general": ["muscle", "back", "eye", "ankle"],
+      "biomedical": ["bacterial", "viral", "resistance", "mutation", "isolate", "variant"]
+    },
+    {
+      "prefix": "culture",
+      "ambiguity": "high",
+      "note": "societal culture vs bacterial culture",
+      "general": ["war", "minister", "shock"],
+      "biomedical": ["bacterial", "cell", "medium", "plate", "flask", "broth"]
+    },
+    {
+      "prefix": "receptor",
+      "ambiguity": "domain_specific",
+      "note": "almost exclusively biomedical; tests GPT-2's domain coverage",
+      "general": [],
+      "biomedical": ["agonist", "binding", "activation", "signaling", "pathway", "protein", "antagonist"]
+    },
+    {
+      "prefix": "white",
+      "ambiguity": "high",
+      "note": "color/political usage vs hematological term",
+      "general": ["house", "wine", "collar", "paper", "noise", "board", "flag"],
+      "biomedical": ["matter", "blood", "cell"]
+    },
+    {
+      "prefix": "plasma",
+      "ambiguity": "medium",
+      "note": "display technology vs blood component",
+      "general": ["screen", "television"],
+      "biomedical": ["membrane", "protein", "cell", "donation", "transfusion", "therapy"]
+    },
+    {
+      "prefix": "vector",
+      "ambiguity": "medium",
+      "note": "math/CS sense vs biological disease vector",
+      "general": ["space", "field", "image", "font"],
+      "biomedical": ["viral", "disease", "control", "transmission", "resistance"]
+    },
+    {
+      "prefix": "marker",
+      "ambiguity": "medium",
+      "note": "writing instrument vs biological marker",
+      "general": ["pen", "board", "road", "street"],
+      "biomedical": ["genetic", "tumor", "disease", "protein", "expression", "serum"]
+    },
+    {
+      "prefix": "signal",
+      "ambiguity": "medium",
+      "note": "communications signal vs cell signaling",
+      "general": ["traffic", "road", "turn", "smoke", "fire", "radio"],
+      "biomedical": ["pathway", "transduction", "protein", "receptor", "cascade", "molecule"]
+    },
+    {
+      "prefix": "membrane",
+      "ambiguity": "domain_specific",
+      "note": "biological membrane; rare general usage",
+      "general": ["filter", "roof"],
+      "biomedical": ["potential", "protein", "transport", "fusion", "damage", "permeability"]
+    },
+    {
+      "prefix": "primary",
+      "ambiguity": "medium",
+      "note": "general use vs primary tumor/clinical endpoint",
+      "general": ["school", "election", "color", "source", "goal"],
+      "biomedical": ["tumor", "endpoint", "antibody", "care", "prevention", "diagnosis"]
+    },
+    {
+      "prefix": "acid",
+      "ambiguity": "medium",
+      "note": "common word vs biochemical sense",
+      "general": ["rain", "test", "jazz", "rock"],
+      "biomedical": ["reflux", "resistance", "base", "synthesis", "production"]
+    },
+    {
+      "prefix": "base",
+      "ambiguity": "medium",
+      "note": "everyday base vs nucleotide base",
+      "general": ["ball", "camp", "line", "rate", "salary"],
+      "biomedical": ["pair", "sequence", "mutation", "excision", "repair"]
+    },
+    {
+      "prefix": "bone",
+      "ambiguity": "medium",
+      "note": "general word vs clinical/anatomical sense",
+      "general": ["china", "yard", "dry"],
+      "biomedical": ["marrow", "density", "loss", "fracture", "cancer", "mineral"]
+    },
+    {
+      "prefix": "brain",
+      "ambiguity": "medium",
+      "note": "colloquial use vs neurological sense",
+      "general": ["storm", "wash", "dead"],
+      "biomedical": ["tumor", "damage", "injury", "stem", "activity", "scan"]
+    },
+    {
+      "prefix": "immune",
+      "ambiguity": "medium",
+      "note": "general immunity vs immunological process",
+      "general": ["system"],
+      "biomedical": ["response", "cell", "deficiency", "therapy", "suppression", "activation", "function"]
+    },
+    {
+      "prefix": "viral",
+      "ambiguity": "high",
+      "note": "internet viral content vs virology",
+      "general": ["video", "marketing", "content"],
+      "biomedical": ["load", "infection", "replication", "therapy", "genome", "protein"]
+    },
+    {
+      "prefix": "dose",
+      "ambiguity": "medium",
+      "note": "everyday vs pharmacological dose",
+      "general": ["rate"],
+      "biomedical": ["response", "dependent", "effect", "schedule", "toxicity", "escalation"]
+    },
+    {
+      "prefix": "hormone",
+      "ambiguity": "medium",
+      "note": "popular health usage vs endocrinological sense",
+      "general": ["replacement"],
+      "biomedical": ["receptor", "level", "secretion", "production", "signaling", "balance"]
+    },
+    {
+      "prefix": "tumor",
+      "ambiguity": "medium",
+      "note": "colloquial vs oncological sense",
+      "general": ["board"],
+      "biomedical": ["growth", "suppressor", "marker", "regression", "necrosis", "invasion", "microenvironment"]
+    },
+    {
+      "prefix": "infection",
+      "ambiguity": "medium",
+      "note": "everyday vs clinical infection terminology",
+      "general": ["rate", "control"],
+      "biomedical": ["treatment", "prevention", "spread", "risk", "disease", "site"]
+    },
+    {
+      "prefix": "mutation",
+      "ambiguity": "medium",
+      "note": "sci-fi/colloquial vs genetic sense",
+      "general": ["rate"],
+      "biomedical": ["analysis", "detection", "spectrum", "frequency", "load", "effect", "carrier"]
+    },
+    {
+      "prefix": "neural",
+      "ambiguity": "medium",
+      "note": "AI/ML use vs neuroscience sense",
+      "general": ["network"],
+      "biomedical": ["pathway", "circuit", "activity", "damage", "plasticity", "tube"]
+    },
+    {
+      "prefix": "clinical",
+      "ambiguity": "medium",
+      "note": "formal/detached vs strictly medical sense",
+      "general": ["trial", "study"],
+      "biomedical": ["outcome", "endpoint", "practice", "evidence", "significance", "response", "setting"]
+    },
+    {
+      "prefix": "enzyme",
+      "ambiguity": "domain_specific",
+      "note": "biology/health products vs biochemical process",
+      "general": ["supplement", "product"],
+      "biomedical": ["activity", "inhibition", "production", "kinetics", "expression", "assay", "deficiency"]
+    },
+    {
+      "prefix": "antibody",
+      "ambiguity": "domain_specific",
+      "note": "common in pop-health discourse vs specific immunology sense",
+      "general": ["test"],
+      "biomedical": ["response", "production", "titer", "binding", "therapy", "level", "detection"]
+    },
+    {
+      "prefix": "platelet",
+      "ambiguity": "domain_specific",
+      "note": "blood component; rare in general text",
+      "general": [],
+      "biomedical": ["count", "aggregation", "activation", "function", "therapy", "transfusion"]
+    },
+    {
+      "prefix": "stem",
+      "ambiguity": "medium",
+      "note": "plant stem / STEM education vs stem cell biology",
+      "general": ["education", "field", "bark"],
+      "biomedical": ["cell", "research", "therapy", "differentiation", "transplant", "biology"]
+    },
+    {
+      "prefix": "blood",
+      "ambiguity": "high",
+      "note": "colloquial/general usage vs clinical/hematology",
+      "general": ["money", "sport", "feud", "brother"],
+      "biomedical": ["pressure", "vessel", "cell", "type", "count", "glucose", "coagulation"]
+    },
+    {
+      "prefix": "chronic",
+      "ambiguity": "medium",
+      "note": "colloquial 'chronic' vs clinical chronic condition",
+      "general": ["problem", "issue", "complainer"],
+      "biomedical": ["disease", "inflammation", "fatigue", "condition", "disorder", "pain", "stress"]
+    },
+    {
+      "prefix": "acute",
+      "ambiguity": "medium",
+      "note": "general acute sense vs clinical acute condition",
+      "general": ["angle", "awareness"],
+      "biomedical": ["injury", "inflammation", "response", "care", "phase", "stress", "toxicity"]
+    }
+  ]
+}
