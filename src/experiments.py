@@ -28,7 +28,8 @@ random.seed(SEED)
 np.random.seed(SEED)
 torch.manual_seed(SEED)
 
-RESULTS_DIR = Path("/workspaces/llm-washing-machine-claude/results")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+RESULTS_DIR = PROJECT_ROOT / "results"
 PLOTS_DIR = RESULTS_DIR / "plots"
 PLOTS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -43,7 +44,7 @@ if DEVICE == "cuda":
 # ============================================================
 # Load compound concepts dataset
 # ============================================================
-with open("/workspaces/llm-washing-machine-claude/datasets/compound_concepts/compounds.json") as f:
+with open(PROJECT_ROOT / "datasets" / "compound_concepts" / "compounds.json") as f:
     dataset = json.load(f)
 
 COMPOUNDS = dataset["target_compounds"]
@@ -59,6 +60,21 @@ print(f"Compositionality distribution: {dict(zip(*np.unique([c['compositionality
 # Load model
 # ============================================================
 print("\n=== Loading GPT-2 Small with TransformerLens ===")
+import transformers
+
+if not hasattr(transformers, "TRANSFORMERS_CACHE"):
+    hf_home = Path(os.environ["HF_HOME"]).expanduser() if os.environ.get("HF_HOME") else Path.home() / ".cache" / "huggingface"
+    transformers.TRANSFORMERS_CACHE = str(hf_home / "transformers")
+
+_auto_model_for_causal_lm_from_pretrained = transformers.AutoModelForCausalLM.from_pretrained
+
+def _compat_auto_model_for_causal_lm_from_pretrained(*args, **kwargs):
+    if "torch_dtype" in kwargs and "dtype" not in kwargs:
+        kwargs["dtype"] = kwargs.pop("torch_dtype")
+    return _auto_model_for_causal_lm_from_pretrained(*args, **kwargs)
+
+transformers.AutoModelForCausalLM.from_pretrained = _compat_auto_model_for_causal_lm_from_pretrained
+
 import transformer_lens
 from transformer_lens import HookedTransformer
 
@@ -500,6 +516,23 @@ print("EXPERIMENT 3: Next-Token Prediction & Compositional Priming")
 print("="*60)
 
 exp3_results = {}
+CONTROL_MODIFIERS = ["red", "blue", "small", "old", "wooden"]
+
+
+def get_sequence_logprob(prompt_tokens, continuation_token_ids):
+    """Log-probability of a continuation token sequence given a prompt."""
+    full_tokens = prompt_tokens + continuation_token_ids
+    input_ids = torch.tensor([full_tokens]).to(DEVICE)
+    with torch.no_grad():
+        logits = model(input_ids)[0]
+        log_probs = torch.log_softmax(logits, dim=-1)
+
+    prompt_len = len(prompt_tokens)
+    total = 0.0
+    for offset, token_id in enumerate(continuation_token_ids):
+        total += log_probs[prompt_len - 1 + offset, token_id].item()
+    return total
+
 
 for compound_info in COMPOUNDS:
     compound = compound_info["compound"]
@@ -509,9 +542,9 @@ for compound_info in COMPOUNDS:
     prompt_with_modifier = f"The {comp1}"
     # Context 2: "The" → what's the probability of "machine" (baseline)?
     prompt_baseline = "The"
-    # Context 3: "The" → what's the probability of the modifier?
-    # Context 4: "The red" → P(machine)? (unrelated modifier control)
-    prompt_control = "The red"
+    # Context 4: unrelated modifier control
+    control_modifier = next(mod for mod in CONTROL_MODIFIERS if mod != comp1)
+    prompt_control = f"The {control_modifier}"
 
     with torch.no_grad():
         # Get logits for modifier context
@@ -529,46 +562,75 @@ for compound_info in COMPOUNDS:
         logits_ctrl = model(torch.tensor([tokens_ctrl]).to(DEVICE))
         probs_ctrl = torch.softmax(logits_ctrl[0, -1], dim=-1)
 
-    # Get probability of head noun token
-    head_token_id = tokenizer.encode(" " + comp2)[0]  # First token of head noun with space
+    head_token_ids = tokenizer.encode(" " + comp2, add_special_tokens=False)
+    is_single_token_head = len(head_token_ids) == 1
 
-    p_head_given_modifier = probs_mod[head_token_id].item()
-    p_head_baseline = probs_base[head_token_id].item()
-    p_head_control = probs_ctrl[head_token_id].item()
-
-    # Get rank of head noun
     sorted_probs_mod, sorted_indices_mod = torch.sort(probs_mod, descending=True)
-    rank_after_modifier = (sorted_indices_mod == head_token_id).nonzero().item() + 1
-
-    sorted_probs_base, sorted_indices_base = torch.sort(probs_base, descending=True)
-    rank_baseline = (sorted_indices_base == head_token_id).nonzero().item() + 1
 
     # Top 5 predictions after modifier
     top5_after_modifier = [(tokenizer.decode([sorted_indices_mod[i].item()]),
                             sorted_probs_mod[i].item())
                            for i in range(5)]
 
-    # Priming ratio
-    priming_ratio = p_head_given_modifier / p_head_baseline if p_head_baseline > 0 else float('inf')
-
-    exp3_results[compound] = {
+    result = {
         "compositionality": compound_info["compositionality"],
         "comp_numeric": COMP_MAP[compound_info["compositionality"]],
         "modifier": comp1,
         "head": comp2,
-        "p_head_given_modifier": p_head_given_modifier,
-        "p_head_baseline": p_head_baseline,
-        "p_head_control": p_head_control,
-        "priming_ratio": priming_ratio,
-        "rank_after_modifier": rank_after_modifier,
-        "rank_baseline": rank_baseline,
+        "control_modifier": control_modifier,
+        "prompt_control": prompt_control,
+        "head_token_ids": head_token_ids,
+        "head_num_tokens": len(head_token_ids),
+        "is_single_token_head": is_single_token_head,
         "top5_after_modifier": top5_after_modifier,
     }
 
-    print(f"  '{comp1}' → P('{comp2}') = {p_head_given_modifier:.4f} "
-          f"(baseline: {p_head_baseline:.6f}, "
-          f"ratio: {priming_ratio:.1f}x, "
-          f"rank: {rank_after_modifier})")
+    if is_single_token_head:
+        head_token_id = head_token_ids[0]
+        p_head_given_modifier = probs_mod[head_token_id].item()
+        p_head_baseline = probs_base[head_token_id].item()
+        p_head_control = probs_ctrl[head_token_id].item()
+        rank_after_modifier = (sorted_indices_mod == head_token_id).nonzero().item() + 1
+        sorted_probs_base, sorted_indices_base = torch.sort(probs_base, descending=True)
+        rank_baseline = (sorted_indices_base == head_token_id).nonzero().item() + 1
+        priming_ratio = p_head_given_modifier / p_head_baseline if p_head_baseline > 0 else float('inf')
+
+        result.update({
+            "p_head_given_modifier": p_head_given_modifier,
+            "p_head_baseline": p_head_baseline,
+            "p_head_control": p_head_control,
+            "priming_ratio": priming_ratio,
+            "rank_after_modifier": rank_after_modifier,
+            "rank_baseline": rank_baseline,
+        })
+
+        print(f"  '{comp1}' → P('{comp2}') = {p_head_given_modifier:.4f} "
+              f"(baseline: {p_head_baseline:.6f}, "
+              f"ratio: {priming_ratio:.1f}x, "
+              f"rank: {rank_after_modifier})")
+    else:
+        first_head_token_id = head_token_ids[0]
+        p_first_head_token_given_modifier = probs_mod[first_head_token_id].item()
+        first_token_rank_after_modifier = (sorted_indices_mod == first_head_token_id).nonzero().item() + 1
+
+        head_sequence_logprob_given_modifier = get_sequence_logprob(tokens_mod, head_token_ids)
+        head_sequence_logprob_baseline = get_sequence_logprob(tokens_base, head_token_ids)
+        head_sequence_logprob_control = get_sequence_logprob(tokens_ctrl, head_token_ids)
+
+        result.update({
+            "p_first_head_token_given_modifier": p_first_head_token_given_modifier,
+            "first_token_rank_after_modifier": first_token_rank_after_modifier,
+            "head_sequence_logprob_given_modifier": head_sequence_logprob_given_modifier,
+            "head_sequence_logprob_baseline": head_sequence_logprob_baseline,
+            "head_sequence_logprob_control": head_sequence_logprob_control,
+        })
+
+        print(f"  '{comp1}' → '{comp2}' is multi-token {head_token_ids}: "
+              f"P(first token)={p_first_head_token_given_modifier:.4f}, "
+              f"first-token rank={first_token_rank_after_modifier}, "
+              f"seq logprob={head_sequence_logprob_given_modifier:.3f}")
+
+    exp3_results[compound] = result
 
 # Save experiment 3 results
 # Convert top5 tuples to serializable format
@@ -586,9 +648,12 @@ with open(RESULTS_DIR / "exp3_next_token.json", "w") as f:
 # ============================================================
 print("\nGenerating Experiment 3 plots...")
 
-# Plot 3a: Priming ratios
+# Plot 3a: Priming ratios (single-token heads only)
+single_token_compounds = [c for c, r in exp3_results.items() if r["is_single_token_head"]]
+multi_token_compounds = [c for c, r in exp3_results.items() if not r["is_single_token_head"]]
+
 fig, ax = plt.subplots(figsize=(12, 7))
-compounds_sorted = sorted(exp3_results.keys(),
+compounds_sorted = sorted(single_token_compounds,
                           key=lambda c: exp3_results[c]["priming_ratio"], reverse=True)
 
 ratios = [exp3_results[c]["priming_ratio"] for c in compounds_sorted]
@@ -612,9 +677,9 @@ plt.tight_layout()
 plt.savefig(PLOTS_DIR / "exp3_priming_ratios.png", dpi=150, bbox_inches='tight')
 plt.close()
 
-# Plot 3b: P(head|modifier) vs P(head|baseline)
+# Plot 3b: P(head|modifier) vs P(head|baseline) for single-token heads only
 fig, ax = plt.subplots(figsize=(10, 8))
-for compound in exp3_results:
+for compound in single_token_compounds:
     r = exp3_results[compound]
     ax.scatter(r["p_head_baseline"], r["p_head_given_modifier"],
                c=r["comp_numeric"], cmap='RdYlGn', vmin=0, vmax=4,
@@ -623,8 +688,8 @@ for compound in exp3_results:
                 fontsize=6, alpha=0.8, textcoords="offset points", xytext=(5, 5))
 
 # Add diagonal (no priming line)
-max_val = max(max(r["p_head_given_modifier"] for r in exp3_results.values()),
-              max(r["p_head_baseline"] for r in exp3_results.values()))
+max_val = max(max(exp3_results[c]["p_head_given_modifier"] for c in single_token_compounds),
+              max(exp3_results[c]["p_head_baseline"] for c in single_token_compounds))
 ax.plot([0, max_val], [0, max_val], 'k--', alpha=0.3, label="No priming (y=x)")
 
 ax.set_xlabel("P(head noun | 'The')")
@@ -715,12 +780,16 @@ if len(low_comp) >= 2 and len(high_comp) >= 2:
     print(f"  Mann-Whitney U: stat={stat:.1f}, p={p_val:.4f}")
     print(f"  Cohen's d: {d:.2f}")
 
-# Test 2: Correlation between compositionality and priming ratio
-comp_vals = [exp3_results[c]["comp_numeric"] for c in exp3_results]
-priming_vals = [np.log10(exp3_results[c]["priming_ratio"]) for c in exp3_results]
-r, p = stats.spearmanr(comp_vals, priming_vals)
-print(f"\nCorrelation: Compositionality vs. log10(Priming Ratio)")
-print(f"  Spearman r = {r:.3f}, p = {p:.4f}")
+# Test 2: Correlation between compositionality and priming ratio for single-token heads
+comp_vals = [exp3_results[c]["comp_numeric"] for c in single_token_compounds]
+priming_vals = [np.log10(exp3_results[c]["priming_ratio"]) for c in single_token_compounds]
+if len(single_token_compounds) >= 2:
+    r, p = stats.spearmanr(comp_vals, priming_vals)
+    print(f"\nCorrelation: Compositionality vs. log10(Priming Ratio) [single-token heads only]")
+    print(f"  Spearman r = {r:.3f}, p = {p:.4f}")
+else:
+    print(f"\nCorrelation: Compositionality vs. log10(Priming Ratio) [single-token heads only]")
+    print("  Not enough single-token heads for correlation.")
 
 # Test 3: Correlation between compositionality and cosine similarity
 cos_vals = [exp1_results[c]["layer_sims"]["compound_vs_additive"][-1] for c in exp1_results]
@@ -745,10 +814,22 @@ print(f"  Mean fraction unique to compound: {np.mean(all_unique):.3f} ± {np.std
 print(f"  Mean Jaccard with head: {np.mean(all_jacc):.3f} ± {np.std(all_jacc):.3f}")
 
 print(f"\nExperiment 3 (Next-Token Priming):")
-all_ratios = [exp3_results[c]["priming_ratio"] for c in exp3_results]
-all_ranks = [exp3_results[c]["rank_after_modifier"] for c in exp3_results]
-print(f"  Mean priming ratio: {np.mean(all_ratios):.1f}x (median: {np.median(all_ratios):.1f}x)")
-print(f"  Mean rank of head after modifier: {np.mean(all_ranks):.1f} (median: {np.median(all_ranks):.1f})")
+all_ratios = [exp3_results[c]["priming_ratio"] for c in single_token_compounds]
+all_ranks = [exp3_results[c]["rank_after_modifier"] for c in single_token_compounds]
+print(f"  Single-token heads: {len(single_token_compounds)}")
+print(f"  Multi-token heads: {len(multi_token_compounds)}")
+print(f"  Mean priming ratio (single-token only): {np.mean(all_ratios):.1f}x "
+      f"(median: {np.median(all_ratios):.1f}x)")
+print(f"  Mean rank of head after modifier (single-token only): {np.mean(all_ranks):.1f} "
+      f"(median: {np.median(all_ranks):.1f})")
+if multi_token_compounds:
+    print("  Multi-token heads:")
+    for compound in multi_token_compounds:
+        r = exp3_results[compound]
+        print(f"    {compound}: head_token_ids={r['head_token_ids']}, "
+              f"logp(modifier)={r['head_sequence_logprob_given_modifier']:.3f}, "
+              f"logp(baseline)={r['head_sequence_logprob_baseline']:.3f}, "
+              f"logp(control)={r['head_sequence_logprob_control']:.3f}")
 
 # Specific answer to the washing machine question
 wm = exp3_results["washing machine"]
@@ -786,10 +867,13 @@ summary = {
         "std_jaccard_head": float(np.std(all_jacc)),
     },
     "experiment_3": {
-        "mean_priming_ratio": float(np.mean(all_ratios)),
-        "median_priming_ratio": float(np.median(all_ratios)),
-        "mean_rank_after_modifier": float(np.mean(all_ranks)),
-        "median_rank_after_modifier": float(np.median(all_ranks)),
+        "single_token_head_count": len(single_token_compounds),
+        "multi_token_head_count": len(multi_token_compounds),
+        "mean_priming_ratio_single_token": float(np.mean(all_ratios)),
+        "median_priming_ratio_single_token": float(np.median(all_ratios)),
+        "mean_rank_after_modifier_single_token": float(np.mean(all_ranks)),
+        "median_rank_after_modifier_single_token": float(np.median(all_ranks)),
+        "multi_token_heads": multi_token_compounds,
     },
     "washing_machine_specific": {
         "p_machine_given_washing": wm["p_head_given_modifier"],
