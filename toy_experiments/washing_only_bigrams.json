@@ -1,0 +1,3121 @@
+{
+  "corpus": "OpenWebText train split (first 100k docs)",
+  "stats": {
+    "total_documents_scanned": 1000000,
+    "unique_washing_followers": 778
+  },
+  "washing_bigrams": [
+    {
+      "word": "machine",
+      "count": 734
+    },
+    {
+      "word": "machines",
+      "count": 415
+    },
+    {
+      "word": "the",
+      "count": 325
+    },
+    {
+      "word": "and",
+      "count": 255
+    },
+    {
+      "word": "up",
+      "count": 250
+    },
+    {
+      "word": "dishes",
+      "count": 191
+    },
+    {
+      "word": "their",
+      "count": 156
+    },
+    {
+      "word": "your",
+      "count": 154
+    },
+    {
+      "word": "away",
+      "count": 134
+    },
+    {
+      "word": "his",
+      "count": 110
+    },
+    {
+      "word": "over",
+      "count": 106
+    },
+    {
+      "word": "of",
+      "count": 100
+    },
+    {
+      "word": "my",
+      "count": 84
+    },
+    {
+      "word": "out",
+      "count": 80
+    },
+    {
+      "word": "with",
+      "count": 78
+    },
+    {
+      "word": "ashore",
+      "count": 77
+    },
+    {
+      "word": "it",
+      "count": 76
+    },
+    {
+      "word": "clothes",
+      "count": 70
+    },
+    {
+      "word": "in",
+      "count": 65
+    },
+    {
+      "word": "hands",
+      "count": 65
+    },
+    {
+      "word": "her",
+      "count": 54
+    },
+    {
+      "word": "them",
+      "count": 54
+    },
+    {
+      "word": "a",
+      "count": 46
+    },
+    {
+      "word": "down",
+      "count": 44
+    },
+    {
+      "word": "is",
+      "count": 44
+    },
+    {
+      "word": "or",
+      "count": 44
+    },
+    {
+      "word": "powder",
+      "count": 44
+    },
+    {
+      "word": "cars",
+      "count": 40
+    },
+    {
+      "word": "our",
+      "count": 34
+    },
+    {
+      "word": "off",
+      "count": 30
+    },
+    {
+      "word": "line",
+      "count": 28
+    },
+    {
+      "word": "soda",
+      "count": 26
+    },
+    {
+      "word": "facilities",
+      "count": 25
+    },
+    {
+      "word": "station",
+      "count": 21
+    },
+    {
+      "word": "its",
+      "count": 20
+    },
+    {
+      "word": "to",
+      "count": 19
+    },
+    {
+      "word": "for",
+      "count": 19
+    },
+    {
+      "word": "on",
+      "count": 17
+    },
+    {
+      "word": "windows",
+      "count": 16
+    },
+    {
+      "word": "through",
+      "count": 15
+    },
+    {
+      "word": "into",
+      "count": 15
+    },
+    {
+      "word": "that",
+      "count": 15
+    },
+    {
+      "word": "at",
+      "count": 15
+    },
+    {
+      "word": "lines",
+      "count": 14
+    },
+    {
+      "word": "was",
+      "count": 12
+    },
+    {
+      "word": "instructions",
+      "count": 11
+    },
+    {
+      "word": "as",
+      "count": 11
+    },
+    {
+      "word": "can",
+      "count": 10
+    },
+    {
+      "word": "all",
+      "count": 10
+    },
+    {
+      "word": "machine-sized",
+      "count": 10
+    },
+    {
+      "word": "stations",
+      "count": 10
+    },
+    {
+      "word": "process",
+      "count": 9
+    },
+    {
+      "word": "water",
+      "count": 9
+    },
+    {
+      "word": "before",
+      "count": 9
+    },
+    {
+      "word": "themselves",
+      "count": 9
+    },
+    {
+      "word": "laundry",
+      "count": 9
+    },
+    {
+      "word": "around",
+      "count": 9
+    },
+    {
+      "word": "so",
+      "count": 9
+    },
+    {
+      "word": "raw",
+      "count": 9
+    },
+    {
+      "word": "hair",
+      "count": 8
+    },
+    {
+      "word": "one",
+      "count": 8
+    },
+    {
+      "word": "by",
+      "count": 8
+    },
+    {
+      "word": "cleaning",
+      "count": 8
+    },
+    {
+      "word": "this",
+      "count": 8
+    },
+    {
+      "word": "but",
+      "count": 8
+    },
+    {
+      "word": "there",
+      "count": 7
+    },
+    {
+      "word": "when",
+      "count": 7
+    },
+    {
+      "word": "drying",
+      "count": 7
+    },
+    {
+      "word": "i",
+      "count": 7
+    },
+    {
+      "word": "chicken",
+      "count": 7
+    },
+    {
+      "word": "machine's",
+      "count": 6
+    },
+    {
+      "word": "has",
+      "count": 6
+    },
+    {
+      "word": "he",
+      "count": 6
+    },
+    {
+      "word": "you",
+      "count": 6
+    },
+    {
+      "word": "cycle",
+      "count": 6
+    },
+    {
+      "word": "cooking",
+      "count": 6
+    },
+    {
+      "word": "rituals",
+      "count": 6
+    },
+    {
+      "word": "temperatures",
+      "count": 6
+    },
+    {
+      "word": "fluid",
+      "count": 6
+    },
+    {
+      "word": "liquid",
+      "count": 6
+    },
+    {
+      "word": "then",
+      "count": 6
+    },
+    {
+      "word": "system",
+      "count": 6
+    },
+    {
+      "word": "these",
+      "count": 5
+    },
+    {
+      "word": "himself",
+      "count": 5
+    },
+    {
+      "word": "would",
+      "count": 5
+    },
+    {
+      "word": "only",
+      "count": 5
+    },
+    {
+      "word": "she",
+      "count": 5
+    },
+    {
+      "word": "vehicles",
+      "count": 5
+    },
+    {
+      "word": "they",
+      "count": 5
+    },
+    {
+      "word": "detergent",
+      "count": 5
+    },
+    {
+      "word": "three",
+      "count": 5
+    },
+    {
+      "word": "vegetables",
+      "count": 5
+    },
+    {
+      "word": "dressing",
+      "count": 5
+    },
+    {
+      "word": "dirty",
+      "count": 5
+    },
+    {
+      "word": "will",
+      "count": 5
+    },
+    {
+      "word": "from",
+      "count": 5
+    },
+    {
+      "word": "between",
+      "count": 5
+    },
+    {
+      "word": "some",
+      "count": 5
+    },
+    {
+      "word": "business",
+      "count": 5
+    },
+    {
+      "word": "using",
+      "count": 4
+    },
+    {
+      "word": "an",
+      "count": 4
+    },
+    {
+      "word": "pots",
+      "count": 4
+    },
+    {
+      "word": "solution",
+      "count": 4
+    },
+    {
+      "word": "clothing",
+      "count": 4
+    },
+    {
+      "word": "ton",
+      "count": 4
+    },
+    {
+      "word": "because",
+      "count": 4
+    },
+    {
+      "word": "areas",
+      "count": 4
+    },
+    {
+      "word": "each",
+      "count": 4
+    },
+    {
+      "word": "equipment",
+      "count": 4
+    },
+    {
+      "word": "across",
+      "count": 4
+    },
+    {
+      "word": "powders",
+      "count": 4
+    },
+    {
+      "word": "bottle",
+      "count": 4
+    },
+    {
+      "word": "what",
+      "count": 4
+    },
+    {
+      "word": "-",
+      "count": 4
+    },
+    {
+      "word": "were",
+      "count": 4
+    },
+    {
+      "word": "day",
+      "count": 4
+    },
+    {
+      "word": "soap",
+      "count": 4
+    },
+    {
+      "word": "sheets",
+      "count": 4
+    },
+    {
+      "word": "one's",
+      "count": 4
+    },
+    {
+      "word": "removes",
+      "count": 4
+    },
+    {
+      "word": "myself",
+      "count": 4
+    },
+    {
+      "word": "said",
+      "count": 4
+    },
+    {
+      "word": "habits",
+      "count": 4
+    },
+    {
+      "word": "are",
+      "count": 4
+    },
+    {
+      "word": "us",
+      "count": 4
+    },
+    {
+      "word": "basket",
+      "count": 4
+    },
+    {
+      "word": "anointing",
+      "count": 4
+    },
+    {
+      "word": "blood",
+      "count": 4
+    },
+    {
+      "word": "him",
+      "count": 4
+    },
+    {
+      "word": "may",
+      "count": 4
+    },
+    {
+      "word": "peeling",
+      "count": 4
+    },
+    {
+      "word": "potatoes",
+      "count": 4
+    },
+    {
+      "word": "agents",
+      "count": 4
+    },
+    {
+      "word": "products",
+      "count": 3
+    },
+    {
+      "word": "methods",
+      "count": 3
+    },
+    {
+      "word": "company",
+      "count": 3
+    },
+    {
+      "word": "well",
+      "count": 3
+    },
+    {
+      "word": "ourselves",
+      "count": 3
+    },
+    {
+      "word": "which",
+      "count": 3
+    },
+    {
+      "word": "board",
+      "count": 3
+    },
+    {
+      "word": "room",
+      "count": 3
+    },
+    {
+      "word": "about",
+      "count": 3
+    },
+    {
+      "word": "onto",
+      "count": 3
+    },
+    {
+      "word": "buffer",
+      "count": 3
+    },
+    {
+      "word": "dead",
+      "count": 3
+    },
+    {
+      "word": "if",
+      "count": 3
+    },
+    {
+      "word": "again",
+      "count": 3
+    },
+    {
+      "word": "along",
+      "count": 3
+    },
+    {
+      "word": "we",
+      "count": 3
+    },
+    {
+      "word": "clean",
+      "count": 3
+    },
+    {
+      "word": "method",
+      "count": 3
+    },
+    {
+      "word": "houses",
+      "count": 3
+    },
+    {
+      "word": "pets",
+      "count": 3
+    },
+    {
+      "word": "done",
+      "count": 3
+    },
+    {
+      "word": "ironing",
+      "count": 3
+    },
+    {
+      "word": "step",
+      "count": 3
+    },
+    {
+      "word": "rice",
+      "count": 3
+    },
+    {
+      "word": "machine'",
+      "count": 3
+    },
+    {
+      "word": "eggs",
+      "count": 3
+    },
+    {
+      "word": "food",
+      "count": 3
+    },
+    {
+      "word": "safe",
+      "count": 3
+    },
+    {
+      "word": "thousands",
+      "count": 3
+    },
+    {
+      "word": "procedures",
+      "count": 3
+    },
+    {
+      "word": "behavior",
+      "count": 3
+    },
+    {
+      "word": "glass",
+      "count": 3
+    },
+    {
+      "word": "fruits",
+      "count": 3
+    },
+    {
+      "word": "no",
+      "count": 2
+    },
+    {
+      "word": "mayim",
+      "count": 2
+    },
+    {
+      "word": "according",
+      "count": 2
+    },
+    {
+      "word": "streets",
+      "count": 2
+    },
+    {
+      "word": "shaving",
+      "count": 2
+    },
+    {
+      "word": "dirt",
+      "count": 2
+    },
+    {
+      "word": "less",
+      "count": 2
+    },
+    {
+      "word": "produce",
+      "count": 2
+    },
+    {
+      "word": "work",
+      "count": 2
+    },
+    {
+      "word": "ones",
+      "count": 2
+    },
+    {
+      "word": "routine",
+      "count": 2
+    },
+    {
+      "word": "says",
+      "count": 2
+    },
+    {
+      "word": "steps",
+      "count": 2
+    },
+    {
+      "word": "those",
+      "count": 2
+    },
+    {
+      "word": "very",
+      "count": 2
+    },
+    {
+      "word": "feet",
+      "count": 2
+    },
+    {
+      "word": "does",
+      "count": 2
+    },
+    {
+      "word": "quick",
+      "count": 2
+    },
+    {
+      "word": "bodies",
+      "count": 2
+    },
+    {
+      "word": "hanging",
+      "count": 2
+    },
+    {
+      "word": "obsession",
+      "count": 2
+    },
+    {
+      "word": "parts",
+      "count": 2
+    },
+    {
+      "word": "every",
+      "count": 2
+    },
+    {
+      "word": "product",
+      "count": 2
+    },
+    {
+      "word": "most",
+      "count": 2
+    },
+    {
+      "word": "plant",
+      "count": 2
+    },
+    {
+      "word": "experiment",
+      "count": 2
+    },
+    {
+      "word": "floors",
+      "count": 2
+    },
+    {
+      "word": "seals",
+      "count": 2
+    },
+    {
+      "word": "diapers",
+      "count": 2
+    },
+    {
+      "word": "herself",
+      "count": 2
+    },
+    {
+      "word": "getting",
+      "count": 2
+    },
+    {
+      "word": "lettuce",
+      "count": 2
+    },
+    {
+      "word": "glassware",
+      "count": 2
+    },
+    {
+      "word": "now",
+      "count": 2
+    },
+    {
+      "word": "faded",
+      "count": 2
+    },
+    {
+      "word": "utensils",
+      "count": 2
+    },
+    {
+      "word": "job",
+      "count": 2
+    },
+    {
+      "word": "tips",
+      "count": 2
+    },
+    {
+      "word": "vessels",
+      "count": 2
+    },
+    {
+      "word": "andor",
+      "count": 2
+    },
+    {
+      "word": "coal",
+      "count": 2
+    },
+    {
+      "word": "heating",
+      "count": 2
+    },
+    {
+      "word": "waxing",
+      "count": 2
+    },
+    {
+      "word": "rooms",
+      "count": 2
+    },
+    {
+      "word": "children",
+      "count": 2
+    },
+    {
+      "word": "soiled",
+      "count": 2
+    },
+    {
+      "word": "tub",
+      "count": 2
+    },
+    {
+      "word": "folding",
+      "count": 2
+    },
+    {
+      "word": "twice",
+      "count": 2
+    },
+    {
+      "word": "hose",
+      "count": 2
+    },
+    {
+      "word": "gloves",
+      "count": 2
+    },
+    {
+      "word": "during",
+      "count": 2
+    },
+    {
+      "word": "under",
+      "count": 2
+    },
+    {
+      "word": "behaviour",
+      "count": 2
+    },
+    {
+      "word": "ritual",
+      "count": 2
+    },
+    {
+      "word": "soaking",
+      "count": 2
+    },
+    {
+      "word": "basal",
+      "count": 2
+    },
+    {
+      "word": "after",
+      "count": 2
+    },
+    {
+      "word": "once",
+      "count": 2
+    },
+    {
+      "word": "followed",
+      "count": 2
+    },
+    {
+      "word": "section",
+      "count": 2
+    },
+    {
+      "word": "touching",
+      "count": 2
+    },
+    {
+      "word": "more",
+      "count": 2
+    },
+    {
+      "word": "although",
+      "count": 2
+    },
+    {
+      "word": "tubs",
+      "count": 2
+    },
+    {
+      "word": "device",
+      "count": 2
+    },
+    {
+      "word": "however",
+      "count": 2
+    },
+    {
+      "word": "someone",
+      "count": 2
+    },
+    {
+      "word": "face",
+      "count": 2
+    },
+    {
+      "word": "try",
+      "count": 2
+    },
+    {
+      "word": "also",
+      "count": 2
+    },
+    {
+      "word": "facility",
+      "count": 2
+    },
+    {
+      "word": "frequency",
+      "count": 2
+    },
+    {
+      "word": "any",
+      "count": 2
+    },
+    {
+      "word": "forever",
+      "count": 2
+    },
+    {
+      "word": "companies",
+      "count": 2
+    },
+    {
+      "word": "used",
+      "count": 2
+    },
+    {
+      "word": "plants",
+      "count": 2
+    },
+    {
+      "word": "without",
+      "count": 2
+    },
+    {
+      "word": "backward",
+      "count": 2
+    },
+    {
+      "word": "baltimores",
+      "count": 2
+    },
+    {
+      "word": "tracks",
+      "count": 2
+    },
+    {
+      "word": "whites",
+      "count": 2
+    },
+    {
+      "word": "did",
+      "count": 2
+    },
+    {
+      "word": "seriously",
+      "count": 2
+    },
+    {
+      "word": "police",
+      "count": 2
+    },
+    {
+      "word": "systems",
+      "count": 2
+    },
+    {
+      "word": "salons",
+      "count": 2
+    },
+    {
+      "word": "temperature",
+      "count": 2
+    },
+    {
+      "word": "praying",
+      "count": 1
+    },
+    {
+      "word": "clothing3",
+      "count": 1
+    },
+    {
+      "word": "past",
+      "count": 1
+    },
+    {
+      "word": "ten",
+      "count": 1
+    },
+    {
+      "word": "defenders",
+      "count": 1
+    },
+    {
+      "word": "detailing",
+      "count": 1
+    },
+    {
+      "word": "lodging",
+      "count": 1
+    },
+    {
+      "word": "be",
+      "count": 1
+    },
+    {
+      "word": "taxis",
+      "count": 1
+    },
+    {
+      "word": "ton's",
+      "count": 1
+    },
+    {
+      "word": "metal",
+      "count": 1
+    },
+    {
+      "word": "back",
+      "count": 1
+    },
+    {
+      "word": "since",
+      "count": 1
+    },
+    {
+      "word": "thus",
+      "count": 1
+    },
+    {
+      "word": "leafy",
+      "count": 1
+    },
+    {
+      "word": "minerals",
+      "count": 1
+    },
+    {
+      "word": "whereof",
+      "count": 1
+    },
+    {
+      "word": "conditions",
+      "count": 1
+    },
+    {
+      "word": "place",
+      "count": 1
+    },
+    {
+      "word": "should",
+      "count": 1
+    },
+    {
+      "word": "itself",
+      "count": 1
+    },
+    {
+      "word": "efficiency",
+      "count": 1
+    },
+    {
+      "word": "large",
+      "count": 1
+    },
+    {
+      "word": "segment",
+      "count": 1
+    },
+    {
+      "word": "merino",
+      "count": 1
+    },
+    {
+      "word": "cloth",
+      "count": 1
+    },
+    {
+      "word": "gets",
+      "count": 1
+    },
+    {
+      "word": "wasting",
+      "count": 1
+    },
+    {
+      "word": "crops",
+      "count": 1
+    },
+    {
+      "word": "centers",
+      "count": 1
+    },
+    {
+      "word": "rvs",
+      "count": 1
+    },
+    {
+      "word": "nurseries",
+      "count": 1
+    },
+    {
+      "word": "chemicals",
+      "count": 1
+    },
+    {
+      "word": "thoroughly",
+      "count": 1
+    },
+    {
+      "word": "crew",
+      "count": 1
+    },
+    {
+      "word": "actions",
+      "count": 1
+    },
+    {
+      "word": "wheat",
+      "count": 1
+    },
+    {
+      "word": "ancient",
+      "count": 1
+    },
+    {
+      "word": "butter",
+      "count": 1
+    },
+    {
+      "word": "lepers'",
+      "count": 1
+    },
+    {
+      "word": "experimental",
+      "count": 1
+    },
+    {
+      "word": "both",
+      "count": 1
+    },
+    {
+      "word": "brushing",
+      "count": 1
+    },
+    {
+      "word": "flushing",
+      "count": 1
+    },
+    {
+      "word": "certain",
+      "count": 1
+    },
+    {
+      "word": "machinesized",
+      "count": 1
+    },
+    {
+      "word": "keeps",
+      "count": 1
+    },
+    {
+      "word": "yourself",
+      "count": 1
+    },
+    {
+      "word": "versus",
+      "count": 1
+    },
+    {
+      "word": "basically",
+      "count": 1
+    },
+    {
+      "word": "stinky",
+      "count": 1
+    },
+    {
+      "word": "we're",
+      "count": 1
+    },
+    {
+      "word": "runs",
+      "count": 1
+    },
+    {
+      "word": "sessions",
+      "count": 1
+    },
+    {
+      "word": "chalk",
+      "count": 1
+    },
+    {
+      "word": "smelly",
+      "count": 1
+    },
+    {
+      "word": "turn",
+      "count": 1
+    },
+    {
+      "word": "moisturising",
+      "count": 1
+    },
+    {
+      "word": "medical",
+      "count": 1
+    },
+    {
+      "word": "particularly",
+      "count": 1
+    },
+    {
+      "word": "week",
+      "count": 1
+    },
+    {
+      "word": "supplied",
+      "count": 1
+    },
+    {
+      "word": "today",
+      "count": 1
+    },
+    {
+      "word": "arnold",
+      "count": 1
+    },
+    {
+      "word": "ceramic",
+      "count": 1
+    },
+    {
+      "word": "muslims",
+      "count": 1
+    },
+    {
+      "word": "necessary",
+      "count": 1
+    },
+    {
+      "word": "kit",
+      "count": 1
+    },
+    {
+      "word": "homes",
+      "count": 1
+    },
+    {
+      "word": "doesn't",
+      "count": 1
+    },
+    {
+      "word": "bagged",
+      "count": 1
+    },
+    {
+      "word": "had",
+      "count": 1
+    },
+    {
+      "word": "others",
+      "count": 1
+    },
+    {
+      "word": "nor",
+      "count": 1
+    },
+    {
+      "word": "httpstcoj8u1vafxxp",
+      "count": 1
+    },
+    {
+      "word": "coolers",
+      "count": 1
+    },
+    {
+      "word": "bikes",
+      "count": 1
+    },
+    {
+      "word": "neds",
+      "count": 1
+    },
+    {
+      "word": "afterwords",
+      "count": 1
+    },
+    {
+      "word": "style",
+      "count": 1
+    },
+    {
+      "word": "bergin",
+      "count": 1
+    },
+    {
+      "word": "different",
+      "count": 1
+    },
+    {
+      "word": "rates",
+      "count": 1
+    },
+    {
+      "word": "crewmen",
+      "count": 1
+    },
+    {
+      "word": "submerged",
+      "count": 1
+    },
+    {
+      "word": "entails",
+      "count": 1
+    },
+    {
+      "word": "coating",
+      "count": 1
+    },
+    {
+      "word": "wash",
+      "count": 1
+    },
+    {
+      "word": "apply",
+      "count": 1
+    },
+    {
+      "word": "100",
+      "count": 1
+    },
+    {
+      "word": "music",
+      "count": 1
+    },
+    {
+      "word": "standing",
+      "count": 1
+    },
+    {
+      "word": "combing",
+      "count": 1
+    },
+    {
+      "word": "stemming",
+      "count": 1
+    },
+    {
+      "word": "modern",
+      "count": 1
+    },
+    {
+      "word": "post",
+      "count": 1
+    },
+    {
+      "word": "steeping",
+      "count": 1
+    },
+    {
+      "word": "recycled",
+      "count": 1
+    },
+    {
+      "word": "disinfecting",
+      "count": 1
+    },
+    {
+      "word": "moisturizing",
+      "count": 1
+    },
+    {
+      "word": "broke",
+      "count": 1
+    },
+    {
+      "word": "white",
+      "count": 1
+    },
+    {
+      "word": "blow",
+      "count": 1
+    },
+    {
+      "word": "radioactive",
+      "count": 1
+    },
+    {
+      "word": "controlling",
+      "count": 1
+    },
+    {
+      "word": "became",
+      "count": 1
+    },
+    {
+      "word": "chopping",
+      "count": 1
+    },
+    {
+      "word": "not",
+      "count": 1
+    },
+    {
+      "word": "line'source",
+      "count": 1
+    },
+    {
+      "word": "machine4",
+      "count": 1
+    },
+    {
+      "word": "everyone",
+      "count": 1
+    },
+    {
+      "word": "gravel",
+      "count": 1
+    },
+    {
+      "word": "working",
+      "count": 1
+    },
+    {
+      "word": "regimen",
+      "count": 1
+    },
+    {
+      "word": "here",
+      "count": 1
+    },
+    {
+      "word": "marine",
+      "count": 1
+    },
+    {
+      "word": "poultry",
+      "count": 1
+    },
+    {
+      "word": "oily",
+      "count": 1
+    },
+    {
+      "word": "upon",
+      "count": 1
+    },
+    {
+      "word": "detergents",
+      "count": 1
+    },
+    {
+      "word": "substance",
+      "count": 1
+    },
+    {
+      "word": "qigong",
+      "count": 1
+    },
+    {
+      "word": "blue",
+      "count": 1
+    },
+    {
+      "word": "bound",
+      "count": 1
+    },
+    {
+      "word": "put",
+      "count": 1
+    },
+    {
+      "word": "arent",
+      "count": 1
+    },
+    {
+      "word": "corpses",
+      "count": 1
+    },
+    {
+      "word": "five",
+      "count": 1
+    },
+    {
+      "word": "machines69",
+      "count": 1
+    },
+    {
+      "word": "revealed",
+      "count": 1
+    },
+    {
+      "word": "behind",
+      "count": 1
+    },
+    {
+      "word": "wounds",
+      "count": 1
+    },
+    {
+      "word": "historic",
+      "count": 1
+    },
+    {
+      "word": "gems",
+      "count": 1
+    },
+    {
+      "word": "processes",
+      "count": 1
+    },
+    {
+      "word": "making",
+      "count": 1
+    },
+    {
+      "word": "women",
+      "count": 1
+    },
+    {
+      "word": "dads",
+      "count": 1
+    },
+    {
+      "word": "machinesfor",
+      "count": 1
+    },
+    {
+      "word": "initiatives",
+      "count": 1
+    },
+    {
+      "word": "dishesironing",
+      "count": 1
+    },
+    {
+      "word": "tomorrow",
+      "count": 1
+    },
+    {
+      "word": "2014-05-16t081939-0700",
+      "count": 1
+    },
+    {
+      "word": "there's",
+      "count": 1
+    },
+    {
+      "word": "football",
+      "count": 1
+    },
+    {
+      "word": "government",
+      "count": 1
+    },
+    {
+      "word": "too",
+      "count": 1
+    },
+    {
+      "word": "beansthat's",
+      "count": 1
+    },
+    {
+      "word": "flood-soaked",
+      "count": 1
+    },
+    {
+      "word": "robot",
+      "count": 1
+    },
+    {
+      "word": "donated",
+      "count": 1
+    },
+    {
+      "word": "power",
+      "count": 1
+    },
+    {
+      "word": "inland",
+      "count": 1
+    },
+    {
+      "word": "spinning",
+      "count": 1
+    },
+    {
+      "word": "practices",
+      "count": 1
+    },
+    {
+      "word": "feet12",
+      "count": 1
+    },
+    {
+      "word": "phone",
+      "count": 1
+    },
+    {
+      "word": "allegations",
+      "count": 1
+    },
+    {
+      "word": "soup",
+      "count": 1
+    },
+    {
+      "word": "queue",
+      "count": 1
+    },
+    {
+      "word": "marketing",
+      "count": 1
+    },
+    {
+      "word": "womens",
+      "count": 1
+    },
+    {
+      "word": "care",
+      "count": 1
+    },
+    {
+      "word": "falls",
+      "count": 1
+    },
+    {
+      "word": "difficult",
+      "count": 1
+    },
+    {
+      "word": "freely",
+      "count": 1
+    },
+    {
+      "word": "irrigation",
+      "count": 1
+    },
+    {
+      "word": "driveways",
+      "count": 1
+    },
+    {
+      "word": "shadows",
+      "count": 1
+    },
+    {
+      "word": "car",
+      "count": 1
+    },
+    {
+      "word": "machines--famous",
+      "count": 1
+    },
+    {
+      "word": "victims",
+      "count": 1
+    },
+    {
+      "word": "vaxchora",
+      "count": 1
+    },
+    {
+      "word": "corruption",
+      "count": 1
+    },
+    {
+      "word": "bicycles",
+      "count": 1
+    },
+    {
+      "word": "outside",
+      "count": 1
+    },
+    {
+      "word": "machinecame",
+      "count": 1
+    },
+    {
+      "word": "plates",
+      "count": 1
+    },
+    {
+      "word": "do",
+      "count": 1
+    },
+    {
+      "word": "bat",
+      "count": 1
+    },
+    {
+      "word": "glasses",
+      "count": 1
+    },
+    {
+      "word": "salting",
+      "count": 1
+    },
+    {
+      "word": "containers",
+      "count": 1
+    },
+    {
+      "word": "wizards",
+      "count": 1
+    },
+    {
+      "word": "message",
+      "count": 1
+    },
+    {
+      "word": "tablets",
+      "count": 1
+    },
+    {
+      "word": "red",
+      "count": 1
+    },
+    {
+      "word": "eleven",
+      "count": 1
+    },
+    {
+      "word": "china",
+      "count": 1
+    },
+    {
+      "word": "manipulation",
+      "count": 1
+    },
+    {
+      "word": "protocols",
+      "count": 1
+    },
+    {
+      "word": "parsi",
+      "count": 1
+    },
+    {
+      "word": "mr",
+      "count": 1
+    },
+    {
+      "word": "cleanliness",
+      "count": 1
+    },
+    {
+      "word": "ben",
+      "count": 1
+    },
+    {
+      "word": "baby",
+      "count": 1
+    },
+    {
+      "word": "usually",
+      "count": 1
+    },
+    {
+      "word": "isnt",
+      "count": 1
+    },
+    {
+      "word": "keep",
+      "count": 1
+    },
+    {
+      "word": "duties",
+      "count": 1
+    },
+    {
+      "word": "youths",
+      "count": 1
+    },
+    {
+      "word": "youll",
+      "count": 1
+    },
+    {
+      "word": "gold",
+      "count": 1
+    },
+    {
+      "word": "extra",
+      "count": 1
+    },
+    {
+      "word": "dark",
+      "count": 1
+    },
+    {
+      "word": "enough",
+      "count": 1
+    },
+    {
+      "word": "drinking",
+      "count": 1
+    },
+    {
+      "word": "carry",
+      "count": 1
+    },
+    {
+      "word": "road",
+      "count": 1
+    },
+    {
+      "word": "powders26",
+      "count": 1
+    },
+    {
+      "word": "windshields",
+      "count": 1
+    },
+    {
+      "word": "don",
+      "count": 1
+    },
+    {
+      "word": "machines59",
+      "count": 1
+    },
+    {
+      "word": "facilities'",
+      "count": 1
+    },
+    {
+      "word": "ineptitude",
+      "count": 1
+    },
+    {
+      "word": "changing",
+      "count": 1
+    },
+    {
+      "word": "burp",
+      "count": 1
+    },
+    {
+      "word": "endless",
+      "count": 1
+    },
+    {
+      "word": "dishses",
+      "count": 1
+    },
+    {
+      "word": "pan",
+      "count": 1
+    },
+    {
+      "word": "that's",
+      "count": 1
+    },
+    {
+      "word": "amenities",
+      "count": 1
+    },
+    {
+      "word": "underwear",
+      "count": 1
+    },
+    {
+      "word": "toiletries",
+      "count": 1
+    },
+    {
+      "word": "improved",
+      "count": 1
+    },
+    {
+      "word": "pigs",
+      "count": 1
+    },
+    {
+      "word": "moreover",
+      "count": 1
+    },
+    {
+      "word": "pattern",
+      "count": 1
+    },
+    {
+      "word": "while",
+      "count": 1
+    },
+    {
+      "word": "ion",
+      "count": 1
+    },
+    {
+      "word": "process34",
+      "count": 1
+    },
+    {
+      "word": "overhead",
+      "count": 1
+    },
+    {
+      "word": "especially",
+      "count": 1
+    },
+    {
+      "word": "devices",
+      "count": 1
+    },
+    {
+      "word": "dyed",
+      "count": 1
+    },
+    {
+      "word": "involved",
+      "count": 1
+    },
+    {
+      "word": "showering",
+      "count": 1
+    },
+    {
+      "word": "fckn",
+      "count": 1
+    },
+    {
+      "word": "ore",
+      "count": 1
+    },
+    {
+      "word": "ores",
+      "count": 1
+    },
+    {
+      "word": "tables",
+      "count": 1
+    },
+    {
+      "word": "sprucing",
+      "count": 1
+    },
+    {
+      "word": "emails",
+      "count": 1
+    },
+    {
+      "word": "proper",
+      "count": 1
+    },
+    {
+      "word": "painting",
+      "count": 1
+    },
+    {
+      "word": "people",
+      "count": 1
+    },
+    {
+      "word": "technique",
+      "count": 1
+    },
+    {
+      "word": "donor",
+      "count": 1
+    },
+    {
+      "word": "got",
+      "count": 1
+    },
+    {
+      "word": "machine10",
+      "count": 1
+    },
+    {
+      "word": "cycles",
+      "count": 1
+    },
+    {
+      "word": "left",
+      "count": 1
+    },
+    {
+      "word": "came",
+      "count": 1
+    },
+    {
+      "word": "machinetakes",
+      "count": 1
+    },
+    {
+      "word": "sic",
+      "count": 1
+    },
+    {
+      "word": "machinesize",
+      "count": 1
+    },
+    {
+      "word": "sidewalks",
+      "count": 1
+    },
+    {
+      "word": "dc",
+      "count": 1
+    },
+    {
+      "word": "jeans",
+      "count": 1
+    },
+    {
+      "word": "surgical",
+      "count": 1
+    },
+    {
+      "word": "first",
+      "count": 1
+    },
+    {
+      "word": "13",
+      "count": 1
+    },
+    {
+      "word": "kills",
+      "count": 1
+    },
+    {
+      "word": "delicate",
+      "count": 1
+    },
+    {
+      "word": "sediment",
+      "count": 1
+    },
+    {
+      "word": "six",
+      "count": 1
+    },
+    {
+      "word": "samples",
+      "count": 1
+    },
+    {
+      "word": "etc",
+      "count": 1
+    },
+    {
+      "word": "shia",
+      "count": 1
+    },
+    {
+      "word": "controversy",
+      "count": 1
+    },
+    {
+      "word": "boat",
+      "count": 1
+    },
+    {
+      "word": "tools",
+      "count": 1
+    },
+    {
+      "word": "basin",
+      "count": 1
+    },
+    {
+      "word": "procedure",
+      "count": 1
+    },
+    {
+      "word": "ensued",
+      "count": 1
+    },
+    {
+      "word": "disheswhile",
+      "count": 1
+    },
+    {
+      "word": "whisky",
+      "count": 1
+    },
+    {
+      "word": "alternatives89",
+      "count": 1
+    },
+    {
+      "word": "volcanic",
+      "count": 1
+    },
+    {
+      "word": "easier",
+      "count": 1
+    },
+    {
+      "word": "excrete",
+      "count": 1
+    },
+    {
+      "word": "lymphoma",
+      "count": 1
+    },
+    {
+      "word": "padded",
+      "count": 1
+    },
+    {
+      "word": "bags",
+      "count": 1
+    },
+    {
+      "word": "begone",
+      "count": 1
+    },
+    {
+      "word": "tights",
+      "count": 1
+    },
+    {
+      "word": "nice",
+      "count": 1
+    },
+    {
+      "word": "leaves",
+      "count": 1
+    },
+    {
+      "word": "kneeling",
+      "count": 1
+    },
+    {
+      "word": "among",
+      "count": 1
+    },
+    {
+      "word": "fine",
+      "count": 1
+    },
+    {
+      "word": "trisbuffered",
+      "count": 1
+    },
+    {
+      "word": "invaluable",
+      "count": 1
+    },
+    {
+      "word": "covering",
+      "count": 1
+    },
+    {
+      "word": "it-if",
+      "count": 1
+    },
+    {
+      "word": "hot",
+      "count": 1
+    },
+    {
+      "word": "11",
+      "count": 1
+    },
+    {
+      "word": "reduces",
+      "count": 1
+    },
+    {
+      "word": "styling",
+      "count": 1
+    },
+    {
+      "word": "larger",
+      "count": 1
+    },
+    {
+      "word": "than",
+      "count": 1
+    },
+    {
+      "word": "upbr",
+      "count": 1
+    },
+    {
+      "word": "ah",
+      "count": 1
+    },
+    {
+      "word": "loose",
+      "count": 1
+    },
+    {
+      "word": "counting",
+      "count": 1
+    },
+    {
+      "word": "subtype",
+      "count": 1
+    },
+    {
+      "word": "another",
+      "count": 1
+    },
+    {
+      "word": "chemical",
+      "count": 1
+    },
+    {
+      "word": "sorting",
+      "count": 1
+    },
+    {
+      "word": "contraption",
+      "count": 1
+    },
+    {
+      "word": "other",
+      "count": 1
+    },
+    {
+      "word": "took",
+      "count": 1
+    },
+    {
+      "word": "woes",
+      "count": 1
+    },
+    {
+      "word": "machinethough",
+      "count": 1
+    },
+    {
+      "word": "cadavers",
+      "count": 1
+    },
+    {
+      "word": "drum",
+      "count": 1
+    },
+    {
+      "word": "wring",
+      "count": 1
+    },
+    {
+      "word": "windscreens",
+      "count": 1
+    },
+    {
+      "word": "sinks",
+      "count": 1
+    },
+    {
+      "word": "might",
+      "count": 1
+    },
+    {
+      "word": "removal",
+      "count": 1
+    },
+    {
+      "word": "often",
+      "count": 1
+    },
+    {
+      "word": "birds",
+      "count": 1
+    },
+    {
+      "word": "tracking",
+      "count": 1
+    },
+    {
+      "word": "robots",
+      "count": 1
+    },
+    {
+      "word": "stonewash",
+      "count": 1
+    },
+    {
+      "word": "increased",
+      "count": 1
+    },
+    {
+      "word": "machinesso",
+      "count": 1
+    },
+    {
+      "word": "condoms",
+      "count": 1
+    },
+    {
+      "word": "spiderman's",
+      "count": 1
+    },
+    {
+      "word": "mud",
+      "count": 1
+    },
+    {
+      "word": "amount",
+      "count": 1
+    },
+    {
+      "word": "mushrooms",
+      "count": 1
+    },
+    {
+      "word": "hand",
+      "count": 1
+    },
+    {
+      "word": "dinner",
+      "count": 1
+    },
+    {
+      "word": "isiss",
+      "count": 1
+    },
+    {
+      "word": "decontaminating",
+      "count": 1
+    },
+    {
+      "word": "napkins",
+      "count": 1
+    },
+    {
+      "word": "oneself",
+      "count": 1
+    },
+    {
+      "word": "monkeys",
+      "count": 1
+    },
+    {
+      "word": "judas",
+      "count": 1
+    },
+    {
+      "word": "alexander's",
+      "count": 1
+    },
+    {
+      "word": "oil",
+      "count": 1
+    },
+    {
+      "word": "eating",
+      "count": 1
+    },
+    {
+      "word": "salads",
+      "count": 1
+    },
+    {
+      "word": "services",
+      "count": 1
+    },
+    {
+      "word": "sewers",
+      "count": 1
+    },
+    {
+      "word": "scaffold",
+      "count": 1
+    },
+    {
+      "word": "shrouding",
+      "count": 1
+    },
+    {
+      "word": "complex",
+      "count": 1
+    },
+    {
+      "word": "downstream",
+      "count": 1
+    },
+    {
+      "word": "fruit",
+      "count": 1
+    },
+    {
+      "word": "history",
+      "count": 1
+    },
+    {
+      "word": "instruction",
+      "count": 1
+    },
+    {
+      "word": "cultures",
+      "count": 1
+    },
+    {
+      "word": "water-resistant",
+      "count": 1
+    },
+    {
+      "word": "auto",
+      "count": 1
+    },
+    {
+      "word": "something",
+      "count": 1
+    },
+    {
+      "word": "sieving",
+      "count": 1
+    },
+    {
+      "word": "staying",
+      "count": 1
+    },
+    {
+      "word": "made",
+      "count": 1
+    },
+    {
+      "word": "cuts",
+      "count": 1
+    },
+    {
+      "word": "pile",
+      "count": 1
+    },
+    {
+      "word": "fights",
+      "count": 1
+    },
+    {
+      "word": "isn't",
+      "count": 1
+    },
+    {
+      "word": "everyone's",
+      "count": 1
+    },
+    {
+      "word": "finger",
+      "count": 1
+    },
+    {
+      "word": "such",
+      "count": 1
+    },
+    {
+      "word": "machinedishwasherdryer",
+      "count": 1
+    },
+    {
+      "word": "action",
+      "count": 1
+    },
+    {
+      "word": "213million",
+      "count": 1
+    },
+    {
+      "word": "dc-based",
+      "count": 1
+    },
+    {
+      "word": "carding",
+      "count": 1
+    },
+    {
+      "word": "machineopening",
+      "count": 1
+    },
+    {
+      "word": "machineis",
+      "count": 1
+    },
+    {
+      "word": "packing",
+      "count": 1
+    },
+    {
+      "word": "area",
+      "count": 1
+    },
+    {
+      "word": "bill",
+      "count": 1
+    },
+    {
+      "word": "fresh",
+      "count": 1
+    },
+    {
+      "word": "im",
+      "count": 1
+    },
+    {
+      "word": "cabbages",
+      "count": 1
+    },
+    {
+      "word": "happened",
+      "count": 1
+    },
+    {
+      "word": "tallow",
+      "count": 1
+    },
+    {
+      "word": "effect",
+      "count": 1
+    },
+    {
+      "word": "beer",
+      "count": 1
+    },
+    {
+      "word": "being",
+      "count": 1
+    },
+    {
+      "word": "trimming",
+      "count": 1
+    },
+    {
+      "word": "cutting",
+      "count": 1
+    },
+    {
+      "word": "school",
+      "count": 1
+    },
+    {
+      "word": "drug",
+      "count": 1
+    },
+    {
+      "word": "factories",
+      "count": 1
+    },
+    {
+      "word": "machinessamsung",
+      "count": 1
+    },
+    {
+      "word": "bedding",
+      "count": 1
+    },
+    {
+      "word": "play",
+      "count": 1
+    },
+    {
+      "word": "anchors",
+      "count": 1
+    },
+    {
+      "word": "tiedown",
+      "count": 1
+    },
+    {
+      "word": "purposes",
+      "count": 1
+    },
+    {
+      "word": "riding",
+      "count": 1
+    },
+    {
+      "word": "it's",
+      "count": 1
+    },
+    {
+      "word": "deodorants",
+      "count": 1
+    },
+    {
+      "word": "woolies",
+      "count": 1
+    },
+    {
+      "word": "many",
+      "count": 1
+    },
+    {
+      "word": "disposal",
+      "count": 1
+    },
+    {
+      "word": "baling",
+      "count": 1
+    },
+    {
+      "word": "gasket",
+      "count": 1
+    },
+    {
+      "word": "fact",
+      "count": 1
+    },
+    {
+      "word": "airplanes",
+      "count": 1
+    },
+    {
+      "word": "cucumbers",
+      "count": 1
+    },
+    {
+      "word": "how",
+      "count": 1
+    },
+    {
+      "word": "forward",
+      "count": 1
+    },
+    {
+      "word": "trays",
+      "count": 1
+    },
+    {
+      "word": "bitcoins",
+      "count": 1
+    },
+    {
+      "word": "salad",
+      "count": 1
+    },
+    {
+      "word": "wouldn't",
+      "count": 1
+    },
+    {
+      "word": "evidence",
+      "count": 1
+    },
+    {
+      "word": "science's",
+      "count": 1
+    },
+    {
+      "word": "still",
+      "count": 1
+    },
+    {
+      "word": "lion",
+      "count": 1
+    },
+    {
+      "word": "machine2",
+      "count": 1
+    },
+    {
+      "word": "tin",
+      "count": 1
+    },
+    {
+      "word": "records",
+      "count": 1
+    },
+    {
+      "word": "vanity",
+      "count": 1
+    },
+    {
+      "word": "buildings",
+      "count": 1
+    },
+    {
+      "word": "person",
+      "count": 1
+    },
+    {
+      "word": "apples",
+      "count": 1
+    },
+    {
+      "word": "tents",
+      "count": 1
+    },
+    {
+      "word": "slash",
+      "count": 1
+    },
+    {
+      "word": "erosion",
+      "count": 1
+    },
+    {
+      "word": "table",
+      "count": 1
+    },
+    {
+      "word": "beneath",
+      "count": 1
+    },
+    {
+      "word": "swords",
+      "count": 1
+    },
+    {
+      "word": "it16",
+      "count": 1
+    },
+    {
+      "word": "buffalo",
+      "count": 1
+    },
+    {
+      "word": "automaton",
+      "count": 1
+    },
+    {
+      "word": "extravaganza",
+      "count": 1
+    },
+    {
+      "word": "machines25",
+      "count": 1
+    },
+    {
+      "word": "me",
+      "count": 1
+    },
+    {
+      "word": "tickets",
+      "count": 1
+    },
+    {
+      "word": "somebody",
+      "count": 1
+    },
+    {
+      "word": "felt",
+      "count": 1
+    },
+    {
+      "word": "ive",
+      "count": 1
+    },
+    {
+      "word": "service",
+      "count": 1
+    },
+    {
+      "word": "'we",
+      "count": 1
+    },
+    {
+      "word": "tonnes",
+      "count": 1
+    },
+    {
+      "word": "wear",
+      "count": 1
+    },
+    {
+      "word": "already-clean",
+      "count": 1
+    },
+    {
+      "word": "turkey",
+      "count": 1
+    },
+    {
+      "word": "semiconductors",
+      "count": 1
+    },
+    {
+      "word": "serbia",
+      "count": 1
+    },
+    {
+      "word": "sick-rooms",
+      "count": 1
+    },
+    {
+      "word": "techniques",
+      "count": 1
+    },
+    {
+      "word": "until",
+      "count": 1
+    },
+    {
+      "word": "serving",
+      "count": 1
+    },
+    {
+      "word": "awaywith",
+      "count": 1
+    },
+    {
+      "word": "together",
+      "count": 1
+    },
+    {
+      "word": "tupperware",
+      "count": 1
+    },
+    {
+      "word": "filters",
+      "count": 1
+    },
+    {
+      "word": "guidelines",
+      "count": 1
+    },
+    {
+      "word": "johns",
+      "count": 1
+    },
+    {
+      "word": "right",
+      "count": 1
+    },
+    {
+      "word": "lucy",
+      "count": 1
+    },
+    {
+      "word": "noticing",
+      "count": 1
+    },
+    {
+      "word": "individual",
+      "count": 1
+    },
+    {
+      "word": "bath",
+      "count": 1
+    },
+    {
+      "word": "semi-trucks",
+      "count": 1
+    },
+    {
+      "word": "trucks",
+      "count": 1
+    },
+    {
+      "word": "lasted",
+      "count": 1
+    },
+    {
+      "word": "cassandor",
+      "count": 1
+    },
+    {
+      "word": "going",
+      "count": 1
+    },
+    {
+      "word": "massage",
+      "count": 1
+    },
+    {
+      "word": "things",
+      "count": 1
+    },
+    {
+      "word": "agitating",
+      "count": 1
+    },
+    {
+      "word": "load",
+      "count": 1
+    },
+    {
+      "word": "wringing",
+      "count": 1
+    },
+    {
+      "word": "doesnt",
+      "count": 1
+    },
+    {
+      "word": "young",
+      "count": 1
+    },
+    {
+      "word": "machineits",
+      "count": 1
+    },
+    {
+      "word": "blankets",
+      "count": 1
+    },
+    {
+      "word": "overall",
+      "count": 1
+    },
+    {
+      "word": "rewards",
+      "count": 1
+    },
+    {
+      "word": "reward",
+      "count": 1
+    },
+    {
+      "word": "designed",
+      "count": 1
+    },
+    {
+      "word": "hunting",
+      "count": 1
+    },
+    {
+      "word": "never",
+      "count": 1
+    },
+    {
+      "word": "human",
+      "count": 1
+    },
+    {
+      "word": "undergarments",
+      "count": 1
+    },
+    {
+      "word": "smudges",
+      "count": 1
+    },
+    {
+      "word": "hung",
+      "count": 1
+    },
+    {
+      "word": "bear",
+      "count": 1
+    },
+    {
+      "word": "alone",
+      "count": 1
+    },
+    {
+      "word": "children's",
+      "count": 1
+    },
+    {
+      "word": "short",
+      "count": 1
+    },
+    {
+      "word": "fabricin",
+      "count": 1
+    },
+    {
+      "word": "phase",
+      "count": 1
+    },
+    {
+      "word": "industry",
+      "count": 1
+    },
+    {
+      "word": "like",
+      "count": 1
+    },
+    {
+      "word": "even",
+      "count": 1
+    },
+    {
+      "word": "seems",
+      "count": 1
+    },
+    {
+      "word": "mythsrealitiestipswhatever",
+      "count": 1
+    },
+    {
+      "word": "upideal",
+      "count": 1
+    },
+    {
+      "word": "machine3",
+      "count": 1
+    },
+    {
+      "word": "simply",
+      "count": 1
+    },
+    {
+      "word": "materials",
+      "count": 1
+    },
+    {
+      "word": "likely",
+      "count": 1
+    },
+    {
+      "word": "bucket",
+      "count": 1
+    },
+    {
+      "word": "mixes",
+      "count": 1
+    },
+    {
+      "word": "dl-ss",
+      "count": 1
+    },
+    {
+      "word": "uranium",
+      "count": 1
+    },
+    {
+      "word": "why",
+      "count": 1
+    },
+    {
+      "word": "avoid",
+      "count": 1
+    },
+    {
+      "word": "mostly",
+      "count": 1
+    },
+    {
+      "word": "wand",
+      "count": 1
+    },
+    {
+      "word": "functions",
+      "count": 1
+    },
+    {
+      "word": "boats",
+      "count": 1
+    },
+    {
+      "word": "175",
+      "count": 1
+    },
+    {
+      "word": "earth",
+      "count": 1
+    },
+    {
+      "word": "ton-",
+      "count": 1
+    },
+    {
+      "word": "resulting",
+      "count": 1
+    },
+    {
+      "word": "resulted",
+      "count": 1
+    },
+    {
+      "word": "new",
+      "count": 1
+    },
+    {
+      "word": "chamber",
+      "count": 1
+    },
+    {
+      "word": "washing",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "test_cases": [
+    {
+      "id": 1,
+      "input_text": "I hate using washing powder, so instead I bought a huge jug of washing",
+      "target_token": "liquid"
+    },
+    {
+      "id": 2,
+      "input_text": "Instead of buying the liquid detergent, I bought a box of washing",
+      "target_token": "powder"
+    },
+    {
+      "id": 3,
+      "input_text": "The sun is out, so I hung the wet clothes on the washing",
+      "target_token": "line"
+    },
+    {
+      "id": 4,
+      "input_text": "The heavy-duty program has a longer washing",
+      "target_token": "cycle"
+    },
+    {
+      "id": 5,
+      "input_text": "To avoid wrist pain while washing clothes, you should adopt a better washing",
+      "target_token": "method"
+    },
+    {
+      "id": 6,
+      "input_text": "Before putting the silk dress into the machine, I should read the washing",
+      "target_token": "instructions"
+    },
+    {
+      "id": 7,
+      "input_text": "The dealership offers a complimentary car washing",
+      "target_token": "service"
+    },
+    {
+      "id": 8,
+      "input_text": "The chemical splash was dangerous, so I ran to the emergency washing",
+      "target_token": "station"
+    },
+    {
+      "id": 9,
+      "input_text": "The report describes a highly efficient and standardized washing",
+      "target_token": "procedure"
+    },
+    {
+      "id": 10,
+      "input_text": "Before entering the sacred temple, the monks performed ancient washing",
+      "target_token": "rituals"
+    },
+    {
+      "id": 11,
+      "input_text": "The laboratory technician poured the washing",
+      "target_token": "liquid"
+    },
+    {
+      "id": 12,
+      "input_text": "To remove the grease, the mechanic sprinkled some abrasive washing",
+      "target_token": "powder"
+    },
+    {
+      "id": 13,
+      "input_text": "Heavy winds today might snap the backyard washing",
+      "target_token": "line"
+    },
+    {
+      "id": 14,
+      "input_text": "To save energy, I recommend selecting the machine's eco-friendly washing",
+      "target_token": "cycle"
+    },
+    {
+      "id": 15,
+      "input_text": "The premium subscription includes a weekly mobile car washing",
+      "target_token": "service"
+    }
+  ]
+}
